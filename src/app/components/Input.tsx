@@ -13,11 +13,12 @@ type Props = {
 export function Input({ className, name, type, onChange, placeholder, disabled }: Props) {
   return (
     <input
-      type="text"
+      type={type}
       className={twMerge(
         "main-border-color rounded-md border bg-inherit px-2 py-1 outline-none",
         className,
         disabled && "opacity-50",
+        disabled && "cursor-not-allowed",
       )}
       name={name}
       onChange={onChange}
