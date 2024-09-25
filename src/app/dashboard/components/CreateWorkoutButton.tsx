@@ -1,11 +1,9 @@
 "use client";
 
-import { signOut } from "@/app/actions/auth";
 import { Button } from "@/app/components/Button";
 import { LoadingSpinner } from "@/app/components/LoadingSpinner";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useTransition } from "react";
-import toast from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
