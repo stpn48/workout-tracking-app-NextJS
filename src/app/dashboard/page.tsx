@@ -4,6 +4,7 @@ import { SignOutButton } from "./components/SignOutButton";
 import { UserAvatar } from "../components/UserAvatar";
 import { CreateWorkoutButton } from "./components/CreateWorkoutButton";
 import { CreateWorkoutModal } from "./components/CreateWorkoutModal";
+import { H1 } from "../components/H1";
 
 export default async function DashboardPage({ searchParams }: { searchParams: { creatingWorkout: boolean } }) {
   const supabase = createClient();
@@ -14,7 +15,7 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
 
   return (
     <div className="t fixed inset-0 h-screen w-screen bg-black p-4 text-sm text-white">
-      <h1 className="text-3xl font-bold">Your Workouts</h1>
+      <H1>Your Workouts</H1>
 
       <CreateWorkoutButton className="absolute right-4 top-4" />
       <SignOutButton className="absolute bottom-4 right-4" />
