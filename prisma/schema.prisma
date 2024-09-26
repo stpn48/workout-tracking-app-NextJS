@@ -13,9 +13,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model test {
-  id    Int     @id @default(autoincrement())
-  name  String?
-  email String?
-  age   Int?
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+  EXPERT
+}
+
+model Workout {
+  id             String     @id @default(uuid())
+  name           String
+  description    String?
+  estimated_time Int
+  difficulty     Difficulty
+  exercises      Exercise[]
+  author_id      String
+}
+
+model Exercise {
+  id         String  @id @default(uuid())
+  name       String
+  sets       Set[]
+  workout_id String
+  workout    Workout @relation(fields: [workout_id], references: [id])
+}
+
+model Set {
+  id          String   @id @default(uuid())
+  reps        Int
+  exercise_id String
+  exercise    Exercise @relation(fields: [exercise_id], references: [id])
 }
