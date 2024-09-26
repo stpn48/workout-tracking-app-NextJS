@@ -8,14 +8,16 @@ type Props = {
   placeholder?: string;
   disabled?: boolean;
   type?: string;
+  id?: string;
 };
 
-export function Input({ className, name, type, onChange, placeholder, disabled }: Props) {
+export function Input({ className, name, type = "text", onChange, placeholder, disabled, id }: Props) {
   return (
     <input
+      id={id}
       type={type}
       className={twMerge(
-        "main-border-color rounded-md border bg-inherit px-2 py-1 outline-none",
+        "main-border-color rounded-md border bg-[#202020] px-2 py-1 text-white outline-none focus:border-[#2e2e2e]",
         className,
         disabled && "opacity-50",
         disabled && "cursor-not-allowed",
