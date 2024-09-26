@@ -8,9 +8,11 @@ type Props = {
   options: string[];
   value: string;
   id?: string;
+  name?: string;
+  disabled?: boolean;
 };
 
-export function Select({ className, options, value: initialValue, id }: Props) {
+export function Select({ className, options, value: initialValue, id, name, disabled }: Props) {
   const [value, setValue] = useState(initialValue);
 
   const handleOnChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -21,8 +23,14 @@ export function Select({ className, options, value: initialValue, id }: Props) {
     <select
       id={id}
       value={value}
+      name={name}
       onChange={handleOnChange}
-      className={twMerge("main-border-color rounded-md border bg-black p-1 text-sm", className)}
+      disabled={disabled}
+      className={twMerge(
+        "main-border-color rounded-md border bg-[#202020] p-1 text-sm text-white outline-none",
+        className,
+        disabled && "opacity-50",
+      )}
     >
       {options.map((option) => (
         <option key={option} value={option} className="main-border-color flex justify-center border-b border-t bg-black">
