@@ -13,3 +13,16 @@
 .main-border-color {
   border-color: #2e2e2e;
 }
+
+/* Class to hide spinner buttons on a number input */
+.hide-number-input-spinner {
+  /* For Chrome, Safari, Edge, Opera */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* For Firefox */
+  -moz-appearance: textfield;
+}
