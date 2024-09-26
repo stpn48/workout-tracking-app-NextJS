@@ -7,7 +7,7 @@ type Props = {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   disabled?: boolean;
-  type?: string;
+  type?: "text" | "password" | "email" | "number";
   id?: string;
 };
 
