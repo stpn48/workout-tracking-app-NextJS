@@ -1,12 +1,12 @@
 import { createClient } from "@/utils/supabase/server";
-import React from "react";
+import React, { Suspense } from "react";
 import { SignOutButton } from "./components/SignOutButton";
 import { CreateWorkoutButton } from "./components/CreateWorkoutButton";
 import { CreateWorkoutModal } from "./components/CreateWorkoutModal";
 import { H1 } from "../components/H1";
 import prisma from "@/lib/prisma";
 import { WorkoutCard } from "./components/WorkoutCard";
-import { EditWorkoutModalVisibility } from "./components/EditWorkoutModalVisiblity";
+import { EditWorkoutModalVisibility } from "./components/WorkoutDetailsProvider";
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -31,7 +31,10 @@ export default async function DashboardPage() {
       <SignOutButton className="absolute bottom-4 right-4" />
 
       <CreateWorkoutModal />
-      <EditWorkoutModalVisibility />
+
+      <Suspense fallback={"loading..."}>
+        <EditWorkoutModalVisibility />
+      </Suspense>
     </div>
   );
 }

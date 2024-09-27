@@ -1,24 +1,22 @@
 "use client";
 
 import { Button } from "@/app/components/Button";
-import { LoadingSpinner } from "@/app/components/LoadingSpinner";
 import { ModalBackDrop } from "@/app/components/ModalBackDrop";
 import { ModalBody } from "@/app/components/ModalBody";
-import { getWorkoutDetails } from "@/hooks/getWorkoutDetails";
 import { useModalVisibilityStore } from "@/store/modalVisiblityStore";
-import { useRouter, useSearchParams } from "next/navigation";
-import React, { useCallback, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useCallback, useState } from "react";
 import { AddExerciseModal } from "./AddExerciseModal";
+import { WorkoutDetails } from "@/types/type";
 
-export function EditWorkoutModal() {
+type Props = {
+  workoutDetails: WorkoutDetails;
+};
+
+export function EditWorkoutModal({ workoutDetails }: Props) {
   const { editWorkoutModalVisible, setEditWorkoutModalVisibilityVisible } = useModalVisibilityStore();
 
-  const searchParams = useSearchParams();
   const router = useRouter();
-
-  const workoutId = useMemo(() => searchParams.get("workoutId"), [searchParams]);
-
-  const { workoutDetails, gettingWorkoutDetails } = getWorkoutDetails(workoutId, editWorkoutModalVisible);
 
   const [addExerciseModalVisible, setAddExerciseModalVisible] = useState(false);
 
@@ -31,18 +29,8 @@ export function EditWorkoutModal() {
     router.replace("/dashboard");
   }, [router]);
 
-  // loading modal
-  if (gettingWorkoutDetails || !workoutDetails) {
-    return (
-      <ModalBackDrop>
-        <ModalBody className="flex p-0">
-          <section className="main-border-color w-[30%] rounded-bl-lg rounded-tl-lg border-b border-l border-t bg-black p-4">
-            <LoadingSpinner />
-          </section>
-          <section className="main-border-color flex flex-grow border-b border-r border-t"></section>
-        </ModalBody>
-      </ModalBackDrop>
-    );
+  if (!editWorkoutModalVisible) {
+    return null;
   }
 
   return (
