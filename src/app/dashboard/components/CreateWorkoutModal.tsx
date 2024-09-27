@@ -8,50 +8,55 @@ import { LoadingSpinner } from "@/app/components/LoadingSpinner";
 import { ModalBackDrop } from "@/app/components/ModalBackDrop";
 import { ModalBody } from "@/app/components/ModalBody";
 import { Select } from "@/app/components/Select";
+import { useModalVisibilityStore } from "@/store/modalVisiblityStore";
 import { Difficulty } from "@prisma/client";
-import { useRouter } from "next/navigation";
 import React, { useCallback, useTransition } from "react";
 import toast from "react-hot-toast";
 
 export function CreateWorkoutModal() {
-  const router = useRouter();
+  const { createWorkoutModalVisible, setCreateWorkoutModalVisible } = useModalVisibilityStore();
 
   const [isCreatingWorkout, startCreatingWorkout] = useTransition();
 
-  const handleCreateWorkout = useCallback((formData: FormData) => {
-    const name = formData.get("name") as string;
-    const description = formData.get("description") as string;
-    const estimatedTime = formData.get("estimatedTime") as string;
-    const difficulty = formData.get("difficulty") as Difficulty;
+  const handleModalClose = useCallback(() => {
+    setCreateWorkoutModalVisible(false);
+  }, [setCreateWorkoutModalVisible]);
 
-    if (!name || !description || !estimatedTime || !difficulty) {
-      toast.error("Please fill out all fields");
-      return;
-    }
+  const handleCreateWorkout = useCallback(
+    (formData: FormData) => {
+      const name = formData.get("name") as string;
+      const description = formData.get("description") as string;
+      const estimatedTime = formData.get("estimatedTime") as string;
+      const difficulty = formData.get("difficulty") as Difficulty;
 
-    try {
-      parseInt(estimatedTime);
-    } catch {
-      toast.error("Estimated time must be a number");
-      return;
-    }
-
-    startCreatingWorkout(async () => {
-      const { error } = await createWorkout(formData);
-
-      if (error) {
-        toast.error(error);
+      if (!name || !description || !estimatedTime || !difficulty) {
+        toast.error("Please fill out all fields");
         return;
       }
-    });
 
-    toast.success("Workout created successfully");
-    handleModalClose();
-  }, []);
+      try {
+        parseInt(estimatedTime);
+      } catch {
+        toast.error("Estimated time must be a number");
+        return;
+      }
 
-  const handleModalClose = useCallback(() => {
-    router.replace("/dashboard");
-  }, [router]);
+      startCreatingWorkout(async () => {
+        const { error } = await createWorkout(formData);
+
+        if (error) {
+          toast.error(error);
+          return;
+        }
+
+        toast.success("Workout created successfully");
+        handleModalClose();
+      });
+    },
+    [handleModalClose, startCreatingWorkout],
+  );
+
+  if (!createWorkoutModalVisible) return null;
 
   return (
     <ModalBackDrop onClick={handleModalClose}>
