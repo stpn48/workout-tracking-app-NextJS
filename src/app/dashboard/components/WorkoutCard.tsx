@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/app/components/Button";
-import { useModalVisibilityStore } from "@/store/modalVisiblityStore";
+import { useModalVisibilityStore } from "@/store/modalVisibilityStore";
 import { Workout } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import React, { useCallback } from "react";
