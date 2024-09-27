@@ -7,7 +7,7 @@ import { Input } from "@/app/components/Input";
 import { LoadingSpinner } from "@/app/components/LoadingSpinner";
 import { ModalBackDrop } from "@/app/components/ModalBackDrop";
 import { ModalBody } from "@/app/components/ModalBody";
-import { useModalVisibilityStore } from "@/store/modalVisiblityStore";
+import { useModalVisibilityStore } from "@/store/modalVisibilityStore";
 import React, { useCallback, useTransition } from "react";
 import toast from "react-hot-toast";
 
