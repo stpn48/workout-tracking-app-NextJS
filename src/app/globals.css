@@ -14,6 +14,10 @@
   border-color: #2e2e2e;
 }
 
+.text-secondary {
+  color: #bdbdbd;
+}
+
 /* Class to hide spinner buttons on a number input */
 .hide-number-input-spinner {
   /* For Chrome, Safari, Edge, Opera */
