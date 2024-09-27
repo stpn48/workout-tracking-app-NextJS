@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/app/components/Button";
-import { useModalVisibilityStore } from "@/store/modalVisiblityStore";
+import { useModalVisibilityStore } from "@/store/modalVisibilityStore";
 import React, { useCallback } from "react";
 import { twMerge } from "tailwind-merge";
 
