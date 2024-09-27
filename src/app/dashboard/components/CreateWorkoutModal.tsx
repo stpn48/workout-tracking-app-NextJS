@@ -7,9 +7,7 @@ import { Input } from "@/app/components/Input";
 import { LoadingSpinner } from "@/app/components/LoadingSpinner";
 import { ModalBackDrop } from "@/app/components/ModalBackDrop";
 import { ModalBody } from "@/app/components/ModalBody";
-import { Select } from "@/app/components/Select";
 import { useModalVisibilityStore } from "@/store/modalVisiblityStore";
-import { Difficulty } from "@prisma/client";
 import React, { useCallback, useTransition } from "react";
 import toast from "react-hot-toast";
 
@@ -27,9 +25,8 @@ export function CreateWorkoutModal() {
       const name = formData.get("name") as string;
       const description = formData.get("description") as string;
       const estimatedTime = formData.get("estimatedTime") as string;
-      const difficulty = formData.get("difficulty") as Difficulty;
 
-      if (!name || !description || !estimatedTime || !difficulty) {
+      if (!name || !description || !estimatedTime) {
         toast.error("Please fill out all fields");
         return;
       }
@@ -93,17 +90,6 @@ export function CreateWorkoutModal() {
               />
               <p>Minutes</p>
             </div>
-          </div>
-
-          <div className="flex flex-col gap-1">
-            <label htmlFor="difficulty-select">Difficulty: </label>
-            <Select
-              disabled={isCreatingWorkout}
-              id="difficulty-select"
-              name="difficulty"
-              value="Select Difficulty"
-              options={["Easy", "Medium", "Hard", "Expert"]}
-            />
           </div>
 
           <div className="absolute bottom-4 right-4 flex gap-2">
