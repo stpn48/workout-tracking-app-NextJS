@@ -3,18 +3,19 @@
 import { Button } from "@/app/components/Button";
 import { ModalBackDrop } from "@/app/components/ModalBackDrop";
 import { ModalBody } from "@/app/components/ModalBody";
-import { useModalVisibilityStore } from "@/store/modalVisiblityStore";
+import { useModalVisibilityStore } from "@/store/modalVisibilityStore";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useState } from "react";
 import { AddExerciseModal } from "./AddExerciseModal";
 import { WorkoutDetails } from "@/types/type";
+import { LoadingSpinner } from "@/app/components/LoadingSpinner";
 
 type Props = {
-  workoutDetails: WorkoutDetails;
+  workoutDetails: WorkoutDetails | null;
 };
 
 export function EditWorkoutModal({ workoutDetails }: Props) {
-  const { editWorkoutModalVisible, setEditWorkoutModalVisibilityVisible } = useModalVisibilityStore();
+  const { setEditWorkoutModalVisibilityVisible } = useModalVisibilityStore();
 
   const router = useRouter();
 
@@ -29,8 +30,8 @@ export function EditWorkoutModal({ workoutDetails }: Props) {
     router.replace("/dashboard");
   }, [router]);
 
-  if (!editWorkoutModalVisible) {
-    return null;
+  if (!workoutDetails) {
+    return <LoadingSpinner />;
   }
 
   return (
