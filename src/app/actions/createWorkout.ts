@@ -2,7 +2,6 @@
 
 import prisma from "@/lib/prisma";
 import { createClient } from "@/utils/supabase/server";
-import { Difficulty } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 export async function createWorkout(formData: FormData) {
@@ -19,11 +18,8 @@ export async function createWorkout(formData: FormData) {
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
   const estimatedTime = formData.get("estimatedTime") as string;
-  const difficultyString = formData.get("difficulty") as string;
 
-  const difficulty = difficultyString.toUpperCase() as Difficulty;
-
-  if (!name || !description || !estimatedTime || !difficulty) {
+  if (!name || !description || !estimatedTime) {
     return { error: "Unexpected error. Please fill out all fields" };
   }
 
@@ -33,7 +29,6 @@ export async function createWorkout(formData: FormData) {
         name,
         description,
         estimated_time: parseInt(estimatedTime),
-        difficulty,
         exercises: undefined,
         author_id: user.id,
       },
