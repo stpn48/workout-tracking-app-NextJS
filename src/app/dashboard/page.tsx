@@ -6,8 +6,9 @@ import { CreateWorkoutButton } from "./components/CreateWorkoutButton";
 import { CreateWorkoutModal } from "./components/CreateWorkoutModal";
 import { H1 } from "../components/H1";
 import prisma from "@/lib/prisma";
+import { WorkoutCard } from "./components/WorkoutCard";
 
-export default async function DashboardPage({ searchParams }: { searchParams: { creatingWorkout: boolean } }) {
+export default async function DashboardPage() {
   const supabase = createClient();
 
   const {
@@ -20,18 +21,16 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
     <div className="t fixed inset-0 h-screen w-screen bg-black p-4 text-sm text-white">
       <H1>Your Workouts</H1>
 
-      <div>
+      <div className="flex flex-wrap gap-4 pt-8">
         {userWorkouts.map((workout) => (
-          <div key={workout.id} className="text-white">
-            <h1>{workout.name}</h1>
-          </div>
+          <WorkoutCard key={workout.id} workout={workout} />
         ))}
       </div>
 
       <CreateWorkoutButton className="absolute right-4 top-4" />
       <SignOutButton className="absolute bottom-4 right-4" />
 
-      {searchParams.creatingWorkout && <CreateWorkoutModal />}
+      <CreateWorkoutModal />
     </div>
   );
 }
