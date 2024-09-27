@@ -9,15 +9,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
-enum Difficulty {
-  EASY
-  MEDIUM
-  HARD
-  EXPERT
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Workout {
@@ -25,7 +19,6 @@ model Workout {
   name           String
   description    String?
   estimated_time Int
-  difficulty     Difficulty
   exercises      Exercise[]
   author_id      String
 }
@@ -39,6 +32,7 @@ model Exercise {
 }
 
 model Set {
+  name        String
   id          String   @id @default(uuid())
   reps        Int
   exercise_id String
