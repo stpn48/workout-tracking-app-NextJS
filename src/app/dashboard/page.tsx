@@ -6,9 +6,13 @@ import { CreateWorkoutModal } from "./components/CreateWorkoutModal";
 import { H1 } from "../components/H1";
 import prisma from "@/lib/prisma";
 import { WorkoutCard } from "./components/WorkoutCard";
-import { EditWorkoutModalVisibility } from "./components/WorkoutDetailsProvider";
+import { WorkoutDetailsProvider } from "./components/WorkoutDetailsProvider";
+import { LoadingSpinner } from "../components/LoadingSpinner";
+import WorkoutDetailsModalVisibility from "./components/WorkoutDetailsModalVisibility";
+import { ModalBody } from "../components/ModalBody";
+import { ModalBackDrop } from "../components/ModalBackDrop";
 
-export default async function DashboardPage() {
+export default async function DashboardPage({ searchParams }: { searchParams: { workoutId: string } }) {
   const supabase = createClient();
 
   const {
@@ -32,9 +36,20 @@ export default async function DashboardPage() {
 
       <CreateWorkoutModal />
 
-      <Suspense fallback={"loading..."}>
-        <EditWorkoutModalVisibility />
-      </Suspense>
+      <WorkoutDetailsModalVisibility>
+        <Suspense
+          key={Date.now()}
+          fallback={
+            <ModalBackDrop>
+              <ModalBody className="relative flex p-0">
+                <LoadingSpinner />
+              </ModalBody>
+            </ModalBackDrop>
+          }
+        >
+          <WorkoutDetailsProvider workoutId={searchParams.workoutId} />
+        </Suspense>
+      </WorkoutDetailsModalVisibility>
     </div>
   );
 }
