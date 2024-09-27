@@ -1,12 +1,12 @@
 import { createClient } from "@/utils/supabase/server";
 import React from "react";
 import { SignOutButton } from "./components/SignOutButton";
-import { UserAvatar } from "../components/UserAvatar";
 import { CreateWorkoutButton } from "./components/CreateWorkoutButton";
 import { CreateWorkoutModal } from "./components/CreateWorkoutModal";
 import { H1 } from "../components/H1";
 import prisma from "@/lib/prisma";
 import { WorkoutCard } from "./components/WorkoutCard";
+import { EditWorkoutModalVisibility } from "./components/EditWorkoutModalVisiblity";
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -31,6 +31,7 @@ export default async function DashboardPage() {
       <SignOutButton className="absolute bottom-4 right-4" />
 
       <CreateWorkoutModal />
+      <EditWorkoutModalVisibility />
     </div>
   );
 }
