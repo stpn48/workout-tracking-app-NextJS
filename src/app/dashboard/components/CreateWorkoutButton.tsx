@@ -1,9 +1,8 @@
 "use client";
 
 import { Button } from "@/app/components/Button";
-import { LoadingSpinner } from "@/app/components/LoadingSpinner";
-import { useRouter } from "next/navigation";
-import React, { useCallback, useTransition } from "react";
+import { useModalVisibilityStore } from "@/store/modalVisiblityStore";
+import React, { useCallback } from "react";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
@@ -11,22 +10,15 @@ type Props = {
 };
 
 export function CreateWorkoutButton({ className }: Props) {
-  const [addingToUrl, startAddingToUrl] = useTransition();
-
-  const router = useRouter();
+  const { setCreateWorkoutModalVisible } = useModalVisibilityStore();
 
   const handleClick = useCallback(() => {
-    startAddingToUrl(() => {
-      router.replace("?creatingWorkout=true");
-    });
-  }, [router]);
+    setCreateWorkoutModalVisible(true);
+  }, [setCreateWorkoutModalVisible]);
 
   return (
     <Button className={twMerge("", className)} onClick={handleClick}>
-      <div className="flex items-center justify-center gap-2">
-        {addingToUrl && <LoadingSpinner className="border-t-black" />}
-        <p>CreateWorkout</p>
-      </div>
+      <div>Create Workout</div>
     </Button>
   );
 }
