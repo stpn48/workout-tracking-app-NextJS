@@ -2,7 +2,7 @@
 
 import { Button } from "@/app/components/Button";
 import { useModalVisibilityStore } from "@/store/modalVisibilityStore";
-import React, { useCallback } from "react";
+import React from "react";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
@@ -10,15 +10,11 @@ type Props = {
 };
 
 export function CreateWorkoutButton({ className }: Props) {
-  const { setCreateWorkoutModalVisible } = useModalVisibilityStore();
-
-  const handleClick = useCallback(() => {
-    setCreateWorkoutModalVisible(true);
-  }, [setCreateWorkoutModalVisible]);
+  const { setShowCreateWorkoutModal } = useModalVisibilityStore();
 
   return (
-    <Button className={twMerge("", className)} onClick={handleClick}>
-      <div>Create Workout</div>
+    <Button className={twMerge("", className)} onClick={() => setShowCreateWorkoutModal(true)}>
+      Create Workout
     </Button>
   );
 }
