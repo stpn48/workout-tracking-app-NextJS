@@ -1,20 +1,19 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 type Props = {
   error: string | null;
-  successMsg: string;
 };
 
-export function ErrorHandler({ error, successMsg }: Props) {
+export function ErrorHandler({ error }: Props) {
   useEffect(() => {
     if (error) {
       toast.error(error);
       return;
     }
-  }, [error, successMsg]);
+  }, [error]);
 
   return null;
 }
