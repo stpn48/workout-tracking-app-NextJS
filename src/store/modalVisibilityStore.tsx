@@ -1,16 +1,16 @@
 import { create } from "zustand";
 
 type Store = {
-  createWorkoutModalVisible: boolean;
-  setCreateWorkoutModalVisible: (val: boolean) => void;
+  showCreateWorkoutModal: boolean;
+  setShowCreateWorkoutModal: (val: boolean) => void;
 
-  editWorkoutModalVisible: boolean;
-  setEditWorkoutModalVisibilityVisible: (val: boolean) => void;
+  showAddExerciseModal: boolean;
+  setShowAddExerciseModal: (val: boolean) => void;
 };
 export const useModalVisibilityStore = create<Store>((set) => ({
-  createWorkoutModalVisible: false,
-  setCreateWorkoutModalVisible: (val) => set({ createWorkoutModalVisible: val }),
+  showCreateWorkoutModal: false,
+  setShowCreateWorkoutModal: (val) => set({ showCreateWorkoutModal: val }),
 
-  editWorkoutModalVisible: false,
-  setEditWorkoutModalVisibilityVisible: (val) => set({ editWorkoutModalVisible: val }),
+  showAddExerciseModal: false,
+  setShowAddExerciseModal: (val) => set({ showAddExerciseModal: val }),
 }));
