@@ -6,6 +6,9 @@ type Store = {
 
   showAddExerciseModal: boolean;
   setShowAddExerciseModal: (val: boolean) => void;
+
+  showEditWorkoutDetailsModal: boolean;
+  setEditWorkoutDetailModal: (val: boolean) => void;
 };
 export const useModalVisibilityStore = create<Store>((set) => ({
   showCreateWorkoutModal: false,
@@ -13,4 +16,7 @@ export const useModalVisibilityStore = create<Store>((set) => ({
 
   showAddExerciseModal: false,
   setShowAddExerciseModal: (val) => set({ showAddExerciseModal: val }),
+
+  showEditWorkoutDetailsModal: false,
+  setEditWorkoutDetailModal: (val) => set({ showEditWorkoutDetailsModal: val }),
 }));
