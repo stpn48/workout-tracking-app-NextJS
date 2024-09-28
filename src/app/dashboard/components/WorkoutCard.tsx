@@ -1,29 +1,21 @@
 "use client";
 
 import { Button } from "@/app/components/Button";
-import { useModalVisibilityStore } from "@/store/modalVisibilityStore";
 import { Workout } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import React, { useCallback } from "react";
+import React from "react";
 
 type Props = {
   workout: Workout;
 };
 
 export function WorkoutCard({ workout }: Props) {
-  const { setEditWorkoutModalVisibilityVisible } = useModalVisibilityStore();
-
   const router = useRouter();
-
-  const handleCardClick = useCallback(() => {
-    setEditWorkoutModalVisibilityVisible(true);
-    router.replace(`?workoutId=${workout.id}`);
-  }, [router]);
 
   return (
     <div
+      onClick={() => router.push(`/workout/${workout.id}`)}
       className="main-border-color secondary-bg relative flex w-[300px] flex-col gap-1 rounded-lg border p-4"
-      onClick={handleCardClick}
     >
       <div className="flex flex-col">
         <h1 className="text-base">{workout.name}</h1>
