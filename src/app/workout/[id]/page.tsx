@@ -5,6 +5,9 @@ import { redirect } from "next/navigation";
 import React from "react";
 import { AddExerciseButton } from "./components/AddExerciseButton";
 import { AddExerciseModal } from "./components/AddExerciseModal";
+import { getUser } from "@/utils/supabase/server";
+import { ExerciseCard } from "./components/ExerciseCard";
+import { EditWorkoutDetailsButton } from "./components/EditWorkoutDetailsButton";
 
 type Props = {
   params: { id: string };
@@ -21,19 +24,29 @@ export default async function WorkoutDetails({ params }: Props) {
     redirect("/dashboard");
   }
 
+  // check if the user is the author of the workout
+  const user = await getUser();
+
+  if (user!.id !== workoutDetails.author_id) {
+    redirect("/dashboard");
+  }
+
   return (
-    <div className="main-bg fixed inset-0 min-h-screen w-screen p-4 text-white">
+    <div className="main-bg fixed inset-0 min-h-screen w-screen overflow-scroll p-4 text-white">
       <Link href={"/dashboard"}>Go Back</Link>
       <H1>{workoutDetails.name}</H1>
 
-      <div>
+      <div className="mt-8 flex flex-wrap gap-4">
         {workoutDetails.exercises.map((exercise) => (
           //TODO: Add a ExerciseCard component
-          <div key={exercise.id}>{exercise.name}</div>
+          <ExerciseCard key={exercise.id} exercise={exercise} />
         ))}
       </div>
 
-      <AddExerciseButton className="absolute right-4 top-4 text-sm" />
+      <div className="absolute right-4 top-4 flex gap-2 text-sm">
+        <EditWorkoutDetailsButton />
+        <AddExerciseButton />
+      </div>
 
       <AddExerciseModal workoutId={params.id} />
     </div>
