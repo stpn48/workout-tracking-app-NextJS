@@ -1,18 +1,13 @@
 import { createClient } from "@/utils/supabase/server";
-import React, { Suspense } from "react";
+import React from "react";
 import { SignOutButton } from "./components/SignOutButton";
-import { CreateWorkoutButton } from "./components/CreateWorkoutButton";
-import { CreateWorkoutModal } from "./components/CreateWorkoutModal";
-import { H1 } from "../components/H1";
+import { H1 } from "@/app/components/H1";
 import prisma from "@/lib/prisma";
 import { WorkoutCard } from "./components/WorkoutCard";
-import { WorkoutDetailsProvider } from "./components/WorkoutDetailsProvider";
-import { LoadingSpinner } from "../components/LoadingSpinner";
-import WorkoutDetailsModalVisibility from "./components/WorkoutDetailsModalVisibility";
-import { ModalBody } from "../components/ModalBody";
-import { ModalBackDrop } from "../components/ModalBackDrop";
+import { CreateWorkoutButton } from "./components/CreateWorkoutButton";
+import { CreateWorkoutModal } from "./components/CreateWorkoutModal";
 
-export default async function DashboardPage({ searchParams }: { searchParams: { workoutId: string } }) {
+export default async function DashboardPage({}: {}) {
   const supabase = createClient();
 
   const {
@@ -35,21 +30,6 @@ export default async function DashboardPage({ searchParams }: { searchParams: { 
       <SignOutButton className="absolute bottom-4 right-4" />
 
       <CreateWorkoutModal />
-
-      <WorkoutDetailsModalVisibility>
-        <Suspense
-          key={Date.now()}
-          fallback={
-            <ModalBackDrop>
-              <ModalBody className="relative flex p-0">
-                <LoadingSpinner />
-              </ModalBody>
-            </ModalBackDrop>
-          }
-        >
-          <WorkoutDetailsProvider workoutId={searchParams.workoutId} />
-        </Suspense>
-      </WorkoutDetailsModalVisibility>
     </div>
   );
 }
