@@ -17,7 +17,7 @@ export function Input({ className, name, type = "text", onChange, placeholder, d
       id={id}
       type={type}
       className={twMerge(
-        "main-border-color rounded-md border bg-[#202020] px-2 py-1 text-white outline-none focus:border-[#2e2e2e]",
+        "main-border-color hide-number-input-spinner rounded-md border bg-[#202020] px-2 py-1 text-white outline-none focus:border-[#2e2e2e]",
         className,
         disabled && "opacity-50",
         disabled && "cursor-not-allowed",
