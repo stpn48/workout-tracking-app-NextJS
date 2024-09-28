@@ -1,9 +1,9 @@
-import { Workout } from "@prisma/client";
+import { Exercise, Set, Workout } from "@prisma/client";
 
 export type WorkoutDetails = Workout & {
-  exercises: {
-    name: string;
-    id: string;
-    workout_id: string;
-  }[];
+  exercises: ExerciseDetails[];
+};
+
+export type ExerciseDetails = Exercise & {
+  sets: Set[];
 };
