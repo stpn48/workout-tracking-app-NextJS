@@ -1,23 +1,25 @@
-"use clean";
+"use client";
 
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
+  onClick: () => void;
   children: React.ReactNode;
   className?: string;
-  onClick?: () => void;
-  disabled?: boolean;
 };
 
-export function ModalBackDrop({ children, className, onClick, disabled }: Props) {
+export function ModalBackDrop({ onClick, children, className }: Props) {
   return (
     <div
       className={twMerge(
-        "fixed inset-0 z-10 flex h-screen w-screen items-center justify-center bg-stone-900 bg-opacity-50",
+        "fixed inset-0 flex h-screen w-screen items-center justify-center bg-stone-900 bg-opacity-50",
         className,
       )}
-      onClick={!disabled ? onClick : undefined}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick();
+      }}
     >
       {children}
     </div>
