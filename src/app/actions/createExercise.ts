@@ -43,6 +43,6 @@ export async function createExercise(exerciseName: string, sets: { name: string;
     })),
   });
 
-  revalidatePath("/dashboard");
+  revalidatePath("/workout");
   return { error: null };
 }
