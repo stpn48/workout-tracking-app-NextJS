@@ -31,13 +31,26 @@ export function AddSetModal({ closeModal, setSets }: Props) {
     });
   }, []);
 
+  //TODO: Add a confirmation modal when the user tries to close the modal and has unsaved changes
+
   return (
     <ModalBackDrop onClick={closeModal}>
-      <ModalBody>
-        <H1>Add Set</H1>
-        <form action={handleAddSet}>
-          <Input disabled={addingSet} placeholder="Name" name="name" />
-          <Input disabled={addingSet} placeholder="Reps" name="reps" type="number" />
+      <ModalBody className="h-fit w-fit px-20 py-10 text-sm">
+        <H1 className="mb-4 flex w-full justify-center">Add Set</H1>
+        <form className="flex flex-col gap-4" action={handleAddSet}>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="set-name" className="text-secondary">
+              Set Name:
+            </label>
+            <Input disabled={addingSet} placeholder="Name" name="name" id="set-name" />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label htmlFor="set-reps" className="text-secondary">
+              Set Reps:
+            </label>
+            <Input disabled={addingSet} placeholder="Reps" name="reps" type="number" id="set-reps" />
+          </div>
           <Button type="submit" disabled={addingSet}>
             Add Set
           </Button>
