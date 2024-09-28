@@ -17,7 +17,7 @@ export async function createWorkout(formData: FormData) {
 
   const name = formData.get("name") as string;
   const description = formData.get("description") as string;
-  const estimatedTime = formData.get("estimatedTime") as string;
+  const estimatedTime = formData.get("estimated-time") as string;
 
   if (!name || !description || !estimatedTime) {
     return { error: "Unexpected error. Please fill out all fields" };
