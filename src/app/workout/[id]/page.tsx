@@ -6,8 +6,10 @@ import React from "react";
 import { AddExerciseButton } from "./components/AddExerciseButton";
 import { AddExerciseModal } from "./components/AddExerciseModal";
 import { getUser } from "@/utils/supabase/server";
-import { ExerciseCard } from "./components/ExerciseCard";
 import { EditWorkoutDetailsButton } from "./components/EditWorkoutDetailsButton";
+import { EditWorkoutDetailsModal } from "./components/EditWorkoutDetailsModal";
+import ExerciseList from "./components/ExerciseList";
+import { EditExerciseModal } from "./components/EditExerciseModal";
 
 type Props = {
   params: { id: string };
@@ -34,14 +36,12 @@ export default async function WorkoutDetails({ params }: Props) {
   return (
     <div className="main-bg fixed inset-0 min-h-screen w-screen overflow-scroll p-4 text-white">
       <Link href={"/dashboard"}>Go Back</Link>
-      <H1>{workoutDetails.name}</H1>
-
-      <div className="mt-8 flex flex-wrap gap-4">
-        {workoutDetails.exercises.map((exercise) => (
-          //TODO: Add a ExerciseCard component
-          <ExerciseCard key={exercise.id} exercise={exercise} />
-        ))}
+      <div>
+        <H1>{workoutDetails.name}</H1>
+        <p className="text-secondary">{workoutDetails.description}</p>
       </div>
+
+      <ExerciseList workoutId={params.id} />
 
       <div className="absolute right-4 top-4 flex gap-2 text-sm">
         <EditWorkoutDetailsButton />
@@ -49,6 +49,7 @@ export default async function WorkoutDetails({ params }: Props) {
       </div>
 
       <AddExerciseModal workoutId={params.id} />
+      <EditWorkoutDetailsModal workoutId={params.id} workoutDetails={workoutDetails} />
     </div>
   );
 }
