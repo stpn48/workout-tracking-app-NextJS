@@ -1,14 +1,19 @@
+"use client";
+
 import { ExerciseDetails } from "@/types/type";
-import { Exercise } from "@prisma/client";
 import React from "react";
 
 type Props = {
   exercise: ExerciseDetails;
+  onClick?: () => void;
 };
 
-export function ExerciseCard({ exercise }: Props) {
+export function ExerciseCard({ exercise, onClick }: Props) {
   return (
-    <div className="main-border-color w-[250px] rounded-lg border px-6 py-4 text-sm">
+    <div
+      onClick={onClick}
+      className="main-border-color w-[250px] rounded-lg border px-6 py-4 text-sm"
+    >
       <h1 className="mb-4 flex w-full justify-center text-lg font-bold">{exercise.name}</h1>
       <div className="flex flex-col gap-2">
         <div className="text-secondary flex justify-between rounded-lg text-xs font-bold">
