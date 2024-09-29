@@ -11,6 +11,8 @@ import { AddSetModal } from "./AddSetModal";
 import toast from "react-hot-toast";
 import { createExercise } from "@/app/actions/createExercise";
 import { checkIsOnDemandRevalidate } from "next/dist/server/api-utils";
+import { useQueryClient } from "@tanstack/react-query";
+import { EditSetModal } from "./EditSetModal";
 
 type Props = {
   workoutId: string;
@@ -22,10 +24,14 @@ type Set = {
 };
 
 export function AddExerciseModal({ workoutId }: Props) {
-  const { showAddExerciseModal, setShowAddExerciseModal } = useModalVisibilityStore();
+  const { showAddExerciseModal, setShowAddExerciseModal, showEditSetModal, setShowEditSetModal } =
+    useModalVisibilityStore();
+
+  const queryClient = useQueryClient();
 
   const [sets, setSets] = useState<Set[]>([]);
   const [showAddSetModal, setAddSetModal] = useState(false);
+  const [currEditingSetIndex, setCurrEditingSetIndex] = useState<number | null>(null);
 
   const [creatingExercise, startCreatingExercise] = useTransition();
 
@@ -48,6 +54,11 @@ export function AddExerciseModal({ workoutId }: Props) {
         }
 
         setSets([]);
+        // invalidate the query to refetch the exercises
+        queryClient.invalidateQueries({
+          queryKey: ["workoutExercises", { workoutId }],
+        });
+
         toast.success("Exercise created successfully");
         setShowAddExerciseModal(false);
       });
@@ -58,6 +69,11 @@ export function AddExerciseModal({ workoutId }: Props) {
   const handleCloseModal = useCallback(() => {
     setShowAddExerciseModal(false);
     setSets([]);
+  }, []);
+
+  const handleSetClick = useCallback((index: number) => {
+    setShowEditSetModal(true);
+    setCurrEditingSetIndex(index);
   }, []);
 
   if (!showAddExerciseModal) {
@@ -76,11 +92,20 @@ export function AddExerciseModal({ workoutId }: Props) {
               <label className="text-secondary" htmlFor="exercise-name">
                 Exercise Name:
               </label>
-              <Input disabled={creatingExercise} id="exercise-name" placeholder="Name" name="name" />
+              <Input
+                disabled={creatingExercise}
+                id="exercise-name"
+                placeholder="Name"
+                name="name"
+              />
             </div>
 
             <div className="flex flex-col gap-2">
-              {sets.length === 0 && <p className="text-secondary flex w-full justify-center text-sm">No sets added...</p>}
+              {sets.length === 0 && (
+                <p className="text-secondary flex w-full justify-center text-sm">
+                  No sets added...
+                </p>
+              )}
 
               {sets.length > 0 && (
                 <div className="text-secondary flex items-center justify-between gap-4 text-xs font-bold uppercase">
@@ -92,7 +117,10 @@ export function AddExerciseModal({ workoutId }: Props) {
 
               {sets.map((set, index) => (
                 //TODO: Add a Set component
-                <div className={`${index % 2 === 0 ? "main-bg" : "secondary-bg"} flex items-center justify-between px-4 py-2`}>
+                <div
+                  onClick={() => handleSetClick(index)}
+                  className={`${index % 2 === 0 ? "main-bg" : "secondary-bg"} flex cursor-pointer items-center justify-between rounded-lg px-4 py-2`}
+                >
                   <h1>{index + 1}.</h1>
                   <h1>{set.name}</h1>
                   <p>{set.reps}</p>
@@ -101,7 +129,11 @@ export function AddExerciseModal({ workoutId }: Props) {
             </div>
 
             <div className="flex flex-col gap-2 text-sm">
-              <Button disabled={creatingExercise} variant="secondary" onClick={() => setAddSetModal(true)}>
+              <Button
+                disabled={creatingExercise}
+                variant="secondary"
+                onClick={() => setAddSetModal(true)}
+              >
                 Add Set
               </Button>
               <hr className="main-border-color" />
@@ -113,7 +145,18 @@ export function AddExerciseModal({ workoutId }: Props) {
         </ModalBody>
       </ModalBackDrop>
 
-      {showAddSetModal && <AddSetModal setSets={setSets} closeModal={() => setAddSetModal(false)} />}
+      {showAddSetModal && (
+        <AddSetModal setSets={setSets} closeModal={() => setAddSetModal(false)} />
+      )}
+
+      {showEditSetModal && (
+        <EditSetModal
+          set={sets[currEditingSetIndex!]}
+          closeModal={() => setShowEditSetModal(false)}
+          setIndex={currEditingSetIndex!}
+          setSets={setSets}
+        />
+      )}
     </>
   );
 }
