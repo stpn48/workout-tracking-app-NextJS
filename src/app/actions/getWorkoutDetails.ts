@@ -1,7 +1,6 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { ExerciseDetails, WorkoutDetails } from "@/types/type";
 import { createClient } from "@/utils/supabase/server";
 
 export async function getWorkoutDetails(workoutId: string) {
@@ -21,29 +20,13 @@ export async function getWorkoutDetails(workoutId: string) {
     },
   });
 
-  const exercises = await prisma.exercise.findMany({
-    where: {
-      workout_id: workoutId,
-    },
-  });
-
-  let finaleExercises: ExerciseDetails[] = [];
-
-  for (const exercise of exercises) {
-    const sets = await prisma.set.findMany({
-      where: {
-        exercise_id: exercise.id,
-      },
-    });
-
-    finaleExercises.push({ ...exercise, sets });
-  }
-
   if (!workoutDetails) {
-    return { data: null, error: "Workout not found" };
+    return { error: "Workout not found", data: null };
   }
 
-  const finalWorkoutDetails: WorkoutDetails = { ...workoutDetails, exercises: finaleExercises };
+  if (workoutDetails.author_id !== user.id) {
+    return { error: "You are not allowed to do this.", data: null };
+  }
 
-  return { data: finalWorkoutDetails, error: null };
+  return { data: workoutDetails, error: null };
 }
