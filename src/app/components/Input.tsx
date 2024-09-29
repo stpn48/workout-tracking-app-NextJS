@@ -9,13 +9,15 @@ type Props = {
   disabled?: boolean;
   type?: "text" | "password" | "email" | "number";
   id?: string;
+  defaultValue?: string;
 };
 
-export function Input({ className, name, type = "text", onChange, placeholder, disabled, id }: Props) {
+export function Input({ className, name, type = "text", onChange, placeholder, disabled, id, defaultValue }: Props) {
   return (
     <input
       id={id}
       type={type}
+      defaultValue={defaultValue}
       className={twMerge(
         "main-border-color hide-number-input-spinner rounded-md border bg-[#202020] px-2 py-1 text-white outline-none focus:border-[#2e2e2e]",
         className,
