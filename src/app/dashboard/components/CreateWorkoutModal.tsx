@@ -43,11 +43,42 @@ export function CreateWorkoutModal() {
     <ModalBackDrop onClick={() => setShowCreateWorkoutModal(false)}>
       <ModalBody className="flex h-fit w-fit flex-col gap-4 px-20 py-10">
         <H1>Create Workout</H1>
-        <form className="flex flex-col gap-2" action={handleCreateWorkout}>
-          <Input disabled={isCreatingWorkout} placeholder="Name" name="name" />
-          <Input disabled={isCreatingWorkout} placeholder="Description" name="description" />
-          <Input disabled={isCreatingWorkout} type="number" placeholder="Estimated Time" name="estimated-time" />
-          <Button disabled={isCreatingWorkout} type="submit">
+        <form className="text-secondary flex flex-col gap-2 text-sm" action={handleCreateWorkout}>
+          <div className="flex flex-col gap-1">
+            <label htmlFor="workout-name">Name:</label>
+            <Input
+              disabled={isCreatingWorkout}
+              id="workout-name"
+              placeholder="Back workout"
+              name="name"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label htmlFor="workout-description">Description:</label>
+            <Input
+              id="workout-description"
+              disabled={isCreatingWorkout}
+              placeholder="Heavily focused on the back muscles"
+              name="description"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label htmlFor="workout-estimated-time">Estimated Time:</label>
+            <div className="flex items-center gap-2">
+              <Input
+                id="workout-estimated-time"
+                disabled={isCreatingWorkout}
+                type="number"
+                placeholder="60"
+                name="estimated-time"
+              />
+              <p>Minutes</p>
+            </div>
+          </div>
+
+          <Button className="mt-4" disabled={isCreatingWorkout} type="submit">
             Create Workout
           </Button>
         </form>
