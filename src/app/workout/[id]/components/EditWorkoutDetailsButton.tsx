@@ -10,10 +10,10 @@ type Props = {
 };
 
 export function EditWorkoutDetailsButton({ className }: Props) {
-  const { setEditWorkoutDetailModal } = useModalVisibilityStore();
+  const { setShowEditWorkoutDetailModal } = useModalVisibilityStore();
 
   return (
-    <Button variant="secondary" className={twMerge("", className)} onClick={() => setEditWorkoutDetailModal(true)}>
+    <Button variant="secondary" className={twMerge("", className)} onClick={() => setShowEditWorkoutDetailModal(true)}>
       Edit Workout Details
     </Button>
   );
