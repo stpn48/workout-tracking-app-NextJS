@@ -4,7 +4,11 @@ import prisma from "@/lib/prisma";
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 
-export async function createExercise(exerciseName: string, sets: { name: string; reps: number }[], workoutId: string) {
+export async function createExercise(
+  exerciseName: string,
+  sets: { name: string; reps: number }[],
+  workoutId: string,
+) {
   const supabase = createClient();
 
   const {
@@ -43,6 +47,5 @@ export async function createExercise(exerciseName: string, sets: { name: string;
     })),
   });
 
-  revalidatePath("/workout");
   return { error: null };
 }
