@@ -41,3 +41,19 @@ model Set {
   created_at  DateTime @default(now())
   exercise    Exercise @relation(fields: [exercise_id], references: [id])
 }
+
+model CompletedExercise {
+  id             String   @id @default(uuid())
+  exercise_id    String
+  maxRepsHistory Int[]
+  timesCompleted Int
+  created_at     DateTime @default(now())
+}
+
+model CompletedWorkout {
+  id               String   @id @default(uuid())
+  workout_id       String
+  timesCompleted   Int
+  created_at       DateTime @default(now())
+  timeTakenHistory Int[]
+}
