@@ -1,30 +1,21 @@
-import { createClient } from "@/utils/supabase/server";
 import React from "react";
 import { SignOutButton } from "./components/SignOutButton";
 import { H1 } from "@/app/components/H1";
-import prisma from "@/lib/prisma";
-import { WorkoutCard } from "./components/WorkoutCard";
 import { CreateWorkoutButton } from "./components/CreateWorkoutButton";
 import { CreateWorkoutModal } from "./components/CreateWorkoutModal";
+import { WorkoutCardList } from "./components/WorkoutCardList";
+import { getUserWorkouts } from "../actions/getUserWorkouts";
+
+const MemoWorkoutCardList = React.memo(WorkoutCardList);
 
 export default async function DashboardPage({}: {}) {
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const userWorkouts = await prisma.workout.findMany({ where: { author_id: user!.id } });
+  const userWorkouts = await getUserWorkouts();
 
   return (
     <div className="t fixed inset-0 h-screen w-screen bg-black p-4 text-sm text-white">
       <H1>Your Workouts</H1>
 
-      <div className="flex flex-wrap gap-4 pt-8">
-        {userWorkouts.map((workout) => (
-          <WorkoutCard key={workout.id} workout={workout} />
-        ))}
-      </div>
+      <MemoWorkoutCardList workouts={userWorkouts} />
 
       <CreateWorkoutButton className="absolute right-4 top-4" />
       <SignOutButton className="absolute bottom-4 right-4" />
