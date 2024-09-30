@@ -4,7 +4,7 @@ import React from "react";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
-  onClick: () => void;
+  onClick?: () => void;
   children: React.ReactNode;
   className?: string;
 };
@@ -18,7 +18,8 @@ export function ModalBackDrop({ onClick, children, className }: Props) {
       )}
       onClick={(e) => {
         e.stopPropagation();
-        onClick();
+
+        if (onClick) onClick();
       }}
     >
       {children}
