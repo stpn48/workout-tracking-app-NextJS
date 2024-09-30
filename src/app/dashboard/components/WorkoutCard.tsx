@@ -1,40 +1,27 @@
-"use client";
-
-import { Button } from "@/app/components/Button";
 import { Workout } from "@prisma/client";
-import { useRouter } from "next/navigation";
-import React, { useCallback } from "react";
+import Link from "next/link";
+import React from "react";
 
 type Props = {
   workout: Workout;
 };
 
 export function WorkoutCard({ workout }: Props) {
-  const router = useRouter();
-
-  const handleLogClick = useCallback(async () => {
-    router.push(`/workout/log/${workout.id}`);
-  }, [router, workout.id]);
-
   return (
-    <div
-      onClick={() => router.push(`/workout/${workout.id}`)}
-      className="main-border-color secondary-bg relative flex w-[300px] flex-col gap-1 rounded-lg border p-4"
-    >
-      <div className="flex flex-col">
-        <h1 className="text-base">{workout.name}</h1>
-        <p className="text-secondary">{workout.description}</p>
-      </div>
-      <p>{workout.estimated_time} min</p>
-      <Button
-        className="absolute bottom-4 right-4"
-        onClick={(e) => {
-          e.stopPropagation();
-          handleLogClick();
-        }}
+    <div className="main-border-color secondary-bg relative flex w-[300px] cursor-default flex-col gap-1 rounded-lg border p-4">
+      <Link className="cursor-default" href={`/workout/${workout.id}`}>
+        <div className="flex flex-col">
+          <h1 className="text-base">{workout.name}</h1>
+          <p className="text-secondary">{workout.description}</p>
+        </div>
+        <p>{workout.estimated_time} min</p>
+      </Link>
+      <Link
+        className="absolute bottom-4 right-4 rounded-md bg-white px-2 py-1 text-black"
+        href={`/workout/log/${workout.id}`}
       >
         Log
-      </Button>
+      </Link>
     </div>
   );
 }
