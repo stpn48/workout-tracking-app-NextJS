@@ -49,7 +49,7 @@ export async function signInWithProvider(provider: Provider) {
 
   const { error, data } = await supabase.auth.signInWithOAuth({
     provider: provider,
-    options: { redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth` }, //TODO: Create this api route. (supabase docs)
+    options: { redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth` },
   });
 
   if (error) {
