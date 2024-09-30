@@ -1,14 +1,10 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { SetDetails } from "@/types/type";
 import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
 
-export async function createExercise(
-  exerciseName: string,
-  sets: { name: string; reps: number }[],
-  workoutId: string,
-) {
+export async function createExercise(exerciseName: string, sets: SetDetails[], workoutId: string) {
   const supabase = createClient();
 
   const {
