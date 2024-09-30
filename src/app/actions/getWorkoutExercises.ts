@@ -41,8 +41,17 @@ export async function getWorkoutExercises(workoutId: string) {
       },
     });
 
+    sets.sort((a, b) => {
+      return a.order - b.order;
+    });
+
     finaleExercises.push({ ...exercise, sets });
   }
+
+  // don't know if needed
+  finaleExercises.sort((a, b) => {
+    return a.order - b.order;
+  });
 
   return finaleExercises;
 }
