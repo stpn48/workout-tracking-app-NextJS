@@ -14,7 +14,7 @@ export async function getExerciseDetails(exerciseId: string, workoutId: string) 
     throw new Error("Invalid input");
   }
 
-  const workoutDetails = await prisma.workout.findUnique({
+  const workoutDetails = await prisma.workout.findFirst({
     where: {
       id: workoutId,
     },
@@ -28,7 +28,7 @@ export async function getExerciseDetails(exerciseId: string, workoutId: string) 
     throw new Error("Unauthorized");
   }
 
-  const exercise = await prisma.exercise.findUnique({
+  const exercise = await prisma.exercise.findFirst({
     where: {
       id: exerciseId,
     },
