@@ -3,7 +3,7 @@
 import { Button } from "@/app/components/Button";
 import { Workout } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useCallback } from "react";
 
 type Props = {
   workout: Workout;
@@ -11,6 +11,10 @@ type Props = {
 
 export function WorkoutCard({ workout }: Props) {
   const router = useRouter();
+
+  const handleLogClick = useCallback(async () => {
+    router.push(`/workout/log/${workout.id}`);
+  }, [router, workout.id]);
 
   return (
     <div
@@ -22,7 +26,15 @@ export function WorkoutCard({ workout }: Props) {
         <p className="text-secondary">{workout.description}</p>
       </div>
       <p>{workout.estimated_time} min</p>
-      <Button className="absolute bottom-4 right-4">Log</Button>
+      <Button
+        className="absolute bottom-4 right-4"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleLogClick();
+        }}
+      >
+        Log
+      </Button>
     </div>
   );
 }
