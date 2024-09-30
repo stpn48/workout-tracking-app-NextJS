@@ -8,17 +8,15 @@ import { Input } from "@/app/components/Input";
 import { ModalBackDrop } from "@/app/components/ModalBackdrop";
 import { ModalBody } from "@/app/components/ModalBody";
 import { useModalVisibilityStore } from "@/store/modalVisibilityStore";
-import { WorkoutDetails } from "@/types/type";
 import { Workout } from "@prisma/client";
 import React, { useCallback, useTransition } from "react";
 import toast from "react-hot-toast";
 
 type Props = {
-  workoutId: string;
   workoutDetails: Workout;
 };
 
-export function EditWorkoutDetailsModal({ workoutId, workoutDetails }: Props) {
+export function EditWorkoutDetailsModal({ workoutDetails }: Props) {
   const { showEditWorkoutDetailsModal, setShowEditWorkoutDetailModal } = useModalVisibilityStore();
 
   const [isUpdatingWorkout, startUpdatingWorkout] = useTransition();
@@ -38,7 +36,7 @@ export function EditWorkoutDetailsModal({ workoutId, workoutDetails }: Props) {
         newName,
         newDescription,
         newEstimatedTime: newEstimatedTime,
-        workoutId: workoutId,
+        workoutId: workoutDetails.id,
       });
 
       if (error) {
