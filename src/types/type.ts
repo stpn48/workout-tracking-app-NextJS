@@ -1,9 +1,8 @@
-import { Exercise, Set, Workout } from "@prisma/client";
+import { Exercise, Set } from "@prisma/client";
 
-export type WorkoutDetails = Workout & {
-  exercises: ExerciseDetails[];
+export type SetDetails = {
+  name: string;
+  reps: number;
 };
 
-export type ExerciseDetails = Exercise & {
-  sets: Set[];
-};
+export type ExerciseDetails = Exercise & { sets: Set[] };
