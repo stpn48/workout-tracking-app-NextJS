@@ -1,7 +1,7 @@
 import { getWorkoutExercises } from "@/app/actions/getWorkoutExercises";
 import { H1 } from "@/app/components/H1";
 import Link from "next/link";
-import { ExerciseList } from "./components/ExerciseList";
+import { LogExerciseModal } from "./components/LogExerciseModal";
 
 export default async function LogWorkoutPage({ params }: { params: { id: string } }) {
   if (!params.id) {
@@ -16,7 +16,7 @@ export default async function LogWorkoutPage({ params }: { params: { id: string 
         Go Back
       </Link>
       <H1>Log Workout</H1>
-      <ExerciseList exercises={exercises} />
+      <LogExerciseModal exercises={exercises} />
     </div>
   );
 }
