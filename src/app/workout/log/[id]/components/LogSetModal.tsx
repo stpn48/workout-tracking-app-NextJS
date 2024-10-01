@@ -3,17 +3,28 @@
 import { Button } from "@/app/components/Button";
 import { Input } from "@/app/components/Input";
 import { ModalBody } from "@/app/components/ModalBody";
+import { LoggedExercise } from "@/types/type";
 import { Set } from "@prisma/client";
-import React, { SetStateAction, useCallback, useRef, useState } from "react";
+import React, { SetStateAction, use, useCallback, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 type Props = {
+  handleFinishClick: () => void;
+  isLastExercise: boolean;
   sets: Set[];
-  setLoggedExercises: React.Dispatch<React.SetStateAction<never[]>>;
+  setLoggedExercises: React.Dispatch<React.SetStateAction<LoggedExercise[]>>;
   setCurrLoggingExerciseIndex: React.Dispatch<SetStateAction<number>>;
+  exerciseName: string;
 }; //TODO: fix type
 
-export function LogSetModal({ sets, setCurrLoggingExerciseIndex, setLoggedExercises }: Props) {
+export function LogSetModal({
+  handleFinishClick,
+  isLastExercise,
+  sets,
+  setCurrLoggingExerciseIndex,
+  setLoggedExercises,
+  exerciseName,
+}: Props) {
   const [currLoggingSetIndex, setCurrLoggingSetIndex] = useState(0);
   const [userReps, setUserReps] = useState<number[]>([]); // user reps for this exercise
   const [userEffortInputValue, setUserEffortInputValue] = useState("");
@@ -27,29 +38,17 @@ export function LogSetModal({ sets, setCurrLoggingExerciseIndex, setLoggedExerci
         return;
       }
 
+      // add the effort to the userReps array
       setUserReps((prev) => {
         const updatedReps = [...prev];
         updatedReps[currLoggingSetIndex] = userEffort;
         return updatedReps;
       });
 
-      // is at end a clicked next
-      if (currLoggingSetIndex === sets.length - 1) {
-        setCurrLoggingExerciseIndex((prev) => prev + 1);
-
-        setLoggedExercises((prev) => {
-          const updatedLoggedExercises = [...prev];
-          updatedLoggedExercises.push({ userReps });
-          return updatedLoggedExercises;
-        });
-
-        setUserReps([]);
-        setCurrLoggingSetIndex(0);
-        return;
-      }
-
+      // move to next  set
       setCurrLoggingSetIndex((prev) => prev + 1);
 
+      // if there is a next set, set the input value to the next set's value. Its because when user moves back in the sets the input value of the set in from would reset
       if (userReps[currLoggingSetIndex + 1]) {
         setUserEffortInputValue(userReps[currLoggingSetIndex + 1].toString());
       } else {
@@ -58,6 +57,25 @@ export function LogSetModal({ sets, setCurrLoggingExerciseIndex, setLoggedExerci
     },
     [currLoggingSetIndex],
   );
+
+  const handleNextExerciseClick = useCallback(() => {
+    setCurrLoggingExerciseIndex((prev) => {
+      if (prev + 1 > )
+    });
+
+    setLoggedExercises((prev) => {
+      const updatedLoggedExercises = [...prev];
+      updatedLoggedExercises.push({
+        maxReps: Math.max(...userReps),
+        name: exerciseName,
+      });
+      return updatedLoggedExercises;
+    });
+
+    setUserEffortInputValue("");
+    setUserReps([]);
+    setCurrLoggingSetIndex(0);
+  }, [userReps, exerciseName]);
 
   const handlePreviousClick = useCallback(() => {
     setUserEffortInputValue(userReps[currLoggingSetIndex - 1].toString());
@@ -86,10 +104,26 @@ export function LogSetModal({ sets, setCurrLoggingExerciseIndex, setLoggedExerci
           />
         </div>
         <div className="flex justify-center gap-2">
-          <Button variant="secondary" onClick={handlePreviousClick}>
+          <Button
+            disabled={currLoggingSetIndex === 0}
+            variant="secondary"
+            onClick={handlePreviousClick}
+          >
             Previous
           </Button>
-          <Button type="submit">Next</Button>
+
+          {/* display if is not last set */}
+          {currLoggingSetIndex !== sets.length - 1 && <Button type="submit">Next</Button>}
+
+          {/* display if is last set and last exercise */}
+          {currLoggingSetIndex === sets.length - 1 && isLastExercise && (
+            <Button onClick={handleFinishClick}>Finish</Button>
+          )}
+
+          {/* display if is last set and not last exercise */}
+          {currLoggingSetIndex === sets.length - 1 && !isLastExercise && (
+            <Button onClick={handleNextExerciseClick}>Next Exercise</Button>
+          )}
         </div>
       </form>
     </ModalBody>
