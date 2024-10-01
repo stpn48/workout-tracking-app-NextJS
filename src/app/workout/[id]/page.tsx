@@ -9,7 +9,6 @@ import { getUser } from "@/utils/supabase/server";
 import { EditWorkoutDetailsButton } from "./components/EditWorkoutDetailsButton";
 import { EditWorkoutDetailsModal } from "./components/EditWorkoutDetailsModal";
 import ExerciseList from "./components/ExerciseList";
-import { EditExerciseModal } from "./components/EditExerciseModal";
 
 type Props = {
   params: { id: string };
@@ -49,7 +48,7 @@ export default async function WorkoutDetails({ params }: Props) {
       </div>
 
       <AddExerciseModal workoutId={params.id} />
-      <EditWorkoutDetailsModal workoutId={params.id} workoutDetails={workoutDetails} />
+      <EditWorkoutDetailsModal workoutDetails={workoutDetails} />
     </div>
   );
 }
