@@ -6,3 +6,8 @@ export type SetDetails = {
 };
 
 export type ExerciseDetails = Exercise & { sets: Set[] };
+
+export type LoggedExercise = {
+  maxReps: number;
+  name: string;
+};
