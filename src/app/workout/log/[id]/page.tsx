@@ -1,11 +1,12 @@
 import { getWorkoutExercises } from "@/app/actions/getWorkoutExercises";
 import { H1 } from "@/app/components/H1";
 import Link from "next/link";
-import { LogExerciseModal } from "./components/LogExerciseModal";
+import { redirect } from "next/navigation";
+import { ExerciseList } from "./components/ExerciseList";
 
 export default async function LogWorkoutPage({ params }: { params: { id: string } }) {
   if (!params.id) {
-    return null;
+    redirect("/dashboard");
   }
 
   const exercises = await getWorkoutExercises(params.id);
@@ -16,7 +17,7 @@ export default async function LogWorkoutPage({ params }: { params: { id: string 
         Go Back
       </Link>
       <H1>Log Workout</H1>
-      <LogExerciseModal exercises={exercises} />
+      <ExerciseList exercises={exercises} />
     </div>
   );
 }
