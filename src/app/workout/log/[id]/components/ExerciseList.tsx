@@ -6,6 +6,7 @@ import { LogExerciseCard } from "./LogExerciseCard";
 import { Button } from "@/app/components/Button";
 import toast from "react-hot-toast";
 import { logWorkout } from "@/app/actions/logWorkout";
+import { useRouter } from "next/navigation";
 
 type Props = {
   exercises: ExerciseDetails[];
@@ -15,6 +16,8 @@ export function ExerciseList({ exercises }: Props) {
   const [effortsPerExercise, setEffortsPerExercise] = useState<{
     [exerciseId: string]: { [setId: string]: number };
   }>({}); // each exercise id has a object of set id's and each set id has the effort
+
+  const router = useRouter();
 
   const handleFinishClick = useCallback(async () => {
     // check if all sets are filled
@@ -38,25 +41,24 @@ export function ExerciseList({ exercises }: Props) {
     try {
       await logWorkout(effortsPerExercise);
       toast.success("Workout logged successfully");
+      router.push("/dashboard/completedExercises");
     } catch (error: any) {
       toast.error("Failed to log workout", error);
       return;
     }
   }, [effortsPerExercise, exercises]);
 
-  useEffect(() => {
-    console.log(effortsPerExercise);
-  }, [effortsPerExercise]);
-
   return (
     <div className="mt-10 flex w-full justify-center">
-      {exercises.map((exercise) => (
-        <LogExerciseCard
-          key={exercise.id}
-          exercise={exercise}
-          setEffortsPerExercise={setEffortsPerExercise}
-        />
-      ))}
+      <div className="flex flex-wrap gap-4">
+        {exercises.map((exercise) => (
+          <LogExerciseCard
+            key={exercise.id}
+            exercise={exercise}
+            setEffortsPerExercise={setEffortsPerExercise}
+          />
+        ))}
+      </div>
       <Button className="absolute bottom-4 right-4 text-base" onClick={handleFinishClick}>
         Finish
       </Button>
