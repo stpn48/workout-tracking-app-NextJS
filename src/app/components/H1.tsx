@@ -7,5 +7,5 @@ type Props = {
 };
 
 export function H1({ className, children }: Props) {
-  return <h1 className={twMerge("text-3xl font-bold text-white", className)}>{children}</h1>;
+  return <h1 className={twMerge("text-[28px] font-bold text-white", className)}>{children}</h1>;
 }
