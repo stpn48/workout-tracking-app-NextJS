@@ -1,9 +1,11 @@
-import { LoadingSpinner } from "@/app/components/LoadingSpinner";
 import React from "react";
+import { LoadingSpinner } from "../components/LoadingSpinner";
 
-export default function loading() {
+type Props = {};
+
+export default function loading({}: Props) {
   return (
-    <div className="main-bg fixed inset-0 flex min-h-screen w-screen items-center justify-center p-4 text-white">
+    <div className="flex h-full w-full items-center justify-center text-white">
       <LoadingSpinner />
     </div>
   );
