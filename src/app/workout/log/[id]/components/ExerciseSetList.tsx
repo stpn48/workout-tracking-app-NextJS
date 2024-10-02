@@ -2,18 +2,26 @@
 
 import { Set } from "@prisma/client";
 import React, { useCallback } from "react";
+import toast from "react-hot-toast";
 
 type Props = {
   sets: Set[];
-  pushEffort: (effort: number) => void;
+  addEffort: (setId: string, effort: number) => void;
+  removeEffort: (setId: string) => void;
 };
 
-export function ExerciseSetList({ sets, pushEffort }: Props) {
+export function ExerciseSetList({ sets, addEffort, removeEffort }: Props) {
   const handleOnChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      pushEffort(Number(e.target.value));
+    (e: React.ChangeEvent<HTMLInputElement>, setId: string) => {
+      if (!e.target.value) {
+        toast.success("Removing effort");
+        removeEffort(setId);
+        return;
+      }
+
+      addEffort(setId, Number(e.target.value));
     },
-    [pushEffort],
+    [addEffort],
   );
 
   return (
@@ -29,7 +37,7 @@ export function ExerciseSetList({ sets, pushEffort }: Props) {
             <h1>goal reps: {set.reps}</h1>
           </div>
           <input
-            onChange={handleOnChange}
+            onChange={(event) => handleOnChange(event, set.id)}
             type="text"
             className="w-[50px] bg-inherit text-center text-lg outline-none"
             placeholder="8"
