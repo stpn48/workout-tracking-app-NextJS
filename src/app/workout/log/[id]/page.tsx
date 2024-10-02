@@ -9,7 +9,14 @@ export default async function LogWorkoutPage({ params }: { params: { id: string 
     redirect("/dashboard");
   }
 
-  const exercises = await getWorkoutExercises(params.id);
+  let exercises;
+
+  try {
+    exercises = await getWorkoutExercises(params.id);
+  } catch (error: any) {
+    console.error("Failed to get exercises", error);
+    redirect("/dashboard");
+  }
 
   return (
     <div className="main-bg min-h-screen w-screen p-4 text-sm text-white">
