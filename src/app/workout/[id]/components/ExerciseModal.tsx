@@ -95,7 +95,7 @@ export function ExerciseModal({
   return (
     <>
       <ModalBackDrop onClick={handleCloseModal}>
-        <ModalBody className="relative h-fit w-fit p-10 text-sm">
+        <ModalBody closeModal={handleCloseModal} className="relative h-fit w-fit p-10 text-sm">
           <H1 className="mb-4">{title}</H1>
           <form className="flex flex-col gap-8" action={handleSubmit}>
             <div className="flex flex-col gap-1">
