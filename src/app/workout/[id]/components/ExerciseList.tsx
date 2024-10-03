@@ -17,8 +17,6 @@ type Props = {
 export default function ExerciseList({ workoutId }: Props) {
   const { showEditExerciseModal, setShowEditExerciseModal } = useModalVisibilityStore();
 
-  const [exerciseCount, setExerciseCount] = useState(5);
-
   const {
     data: exercises,
     error,
@@ -35,31 +33,15 @@ export default function ExerciseList({ workoutId }: Props) {
     setCurrEditingExerciseId(exerciseId);
   }, []);
 
-  // TODO: move this into separate hook with the count mby
-  useEffect(() => {
-    if (isSuccess) {
-      setExerciseCount(exercises!.length);
-    }
-  }, [isSuccess]);
-
   if (error) {
     toast.error(`Failed to load exercises ${error.message}`);
     return null;
   }
 
-  if (isLoading || isRefetching || !isSuccess || exercises.length <= 0 || isFetching) {
+  if (isLoading || isRefetching || !isSuccess || isFetching) {
     return (
-      <div className="mt-8 flex flex-wrap gap-4">
-        {Array(exerciseCount)
-          .fill("")
-          .map((_) => (
-            <div className="main-border-color flex h-[150px] w-[250px] flex-col gap-4 rounded-lg border px-6 py-4">
-              <div className="flex w-full justify-center">
-                <div className="h-6 w-[80px] animate-pulse bg-stone-700" />
-              </div>
-              <div className="h-20 w-full animate-pulse bg-stone-700" />
-            </div>
-          ))}
+      <div className="mt-20 flex w-full justify-center">
+        <LoadingSpinner />
       </div>
     );
   }
@@ -67,6 +49,11 @@ export default function ExerciseList({ workoutId }: Props) {
   return (
     <>
       <div className="mt-8 flex flex-wrap gap-4">
+        {exercises.length === 0 && (
+          <p className="text-secondary flex w-full justify-center text-xs">
+            No exercises. Add some
+          </p>
+        )}
         {exercises.map((exercise, exerciseIndex) => (
           <MemoExerciseCard
             order={exerciseIndex + 1}
