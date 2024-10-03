@@ -5,27 +5,25 @@ import { useState } from "react";
 import MoreDetailsModal from "./MoreDetailsModal";
 
 type Props = {
-  exerciseName: string;
   completedExercise: CompletedExercise;
 };
 
-export function CompletedExerciseCard({ exerciseName, completedExercise }: Props) {
+export function CompletedExerciseCard({ completedExercise }: Props) {
   const [showMoreDetailsModal, setShowMoreDetailsModal] = useState(false);
 
   return (
     <>
       <div
         onClick={() => setShowMoreDetailsModal(true)}
-        className="main-border-color w-fit cursor-pointer rounded-lg border p-4 text-white"
+        className="main-border-color secondary-bg w-fit cursor-pointer rounded-lg border p-4 text-sm text-white"
       >
-        <h1 className="font-bold">{exerciseName}</h1>
+        <h1 className="text-base">{completedExercise.name}</h1>
         <h1>times completed: {completedExercise.timesCompleted}</h1>
       </div>
 
       {showMoreDetailsModal && (
         <MoreDetailsModal
           completedExercise={completedExercise}
-          exerciseName={exerciseName}
           closeModal={() => setShowMoreDetailsModal(false)}
         />
       )}
