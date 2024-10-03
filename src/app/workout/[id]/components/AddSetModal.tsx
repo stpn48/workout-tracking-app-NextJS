@@ -50,7 +50,7 @@ export function AddSetModal({ closeModal, setSets }: Props) {
   return (
     <>
       <ModalBackDrop onClick={handleCloseModal}>
-        <ModalBody className="relative h-fit w-fit p-10 text-sm">
+        <ModalBody closeModal={handleCloseModal} className="relative h-fit w-fit p-10 text-sm">
           <H1 className="mb-4 flex w-full justify-center">Add Set</H1>
           <form className="flex flex-col gap-4" action={handleAddSet}>
             <div className="flex flex-col gap-1">
