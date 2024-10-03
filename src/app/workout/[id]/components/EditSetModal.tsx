@@ -67,7 +67,7 @@ export function EditSetModal({ closeModal, setSets, set, setIndex }: Props) {
   return (
     <>
       <ModalBackDrop onClick={handleCloseModal}>
-        <ModalBody className="h-fit w-fit p-10 text-sm">
+        <ModalBody closeModal={handleCloseModal} className="h-fit w-fit p-10 text-sm">
           <H1 className="mb-4 flex w-full justify-center">Edit Set</H1>
           <form className="flex flex-col gap-4" action={handleEditSet}>
             <div className="mb-2 flex flex-col gap-1">
