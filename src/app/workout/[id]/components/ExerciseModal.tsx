@@ -3,7 +3,7 @@
 import { Button } from "@/app/components/Button";
 import { H1 } from "@/app/components/H1";
 import { Input } from "@/app/components/Input";
-import { ModalBackDrop } from "@/app/components/ModalBackdrop";
+import { ModalBackDrop } from "@/app/components/ModalBackDrop";
 import { ModalBody } from "@/app/components/ModalBody";
 import React, { useCallback, useState } from "react";
 import { AddSetModal } from "./AddSetModal";

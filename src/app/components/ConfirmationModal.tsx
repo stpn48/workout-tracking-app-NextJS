@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@/app/components/Button";
-import { ModalBackDrop } from "@/app/components/ModalBackdrop";
 import { ModalBody } from "@/app/components/ModalBody";
+import { ModalBackDrop } from "./ModalBackDrop";
 
 type Props = {
   message: string;

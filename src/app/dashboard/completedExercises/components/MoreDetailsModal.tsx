@@ -1,4 +1,4 @@
-import { ModalBackDrop } from "@/app/components/ModalBackdrop";
+import { ModalBackDrop } from "@/app/components/ModalBackDrop";
 import { ModalBody } from "@/app/components/ModalBody";
 import { CompletedExercise } from "@prisma/client";
 import React from "react";

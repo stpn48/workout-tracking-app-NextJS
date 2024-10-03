@@ -4,7 +4,7 @@ import { Button } from "@/app/components/Button";
 import { ConfirmationModal } from "@/app/components/ConfirmationModal";
 import { H1 } from "@/app/components/H1";
 import { Input } from "@/app/components/Input";
-import { ModalBackDrop } from "@/app/components/ModalBackdrop";
+import { ModalBackDrop } from "@/app/components/ModalBackDrop";
 import { ModalBody } from "@/app/components/ModalBody";
 import { SetDetails } from "@/types/type";
 import React, { useCallback, useState, useTransition } from "react";

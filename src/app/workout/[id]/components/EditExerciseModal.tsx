@@ -8,7 +8,7 @@ import { useExerciseDetails } from "@/hooks/useExerciseDetails";
 import { updateExerciseDetails } from "@/app/actions/updateExerciseDetails";
 import { ExerciseModal } from "./ExerciseModal";
 import { SetDetails } from "@/types/type";
-import { ModalBackDrop } from "@/app/components/ModalBackdrop";
+import { ModalBackDrop } from "@/app/components/ModalBackDrop";
 import { ModalBody } from "@/app/components/ModalBody";
 
 type Props = {

@@ -4,7 +4,7 @@ import { updateWorkoutDetails } from "@/app/actions/updateWorkoutDetails";
 import { Button } from "@/app/components/Button";
 import { H1 } from "@/app/components/H1";
 import { Input } from "@/app/components/Input";
-import { ModalBackDrop } from "@/app/components/ModalBackdrop";
+import { ModalBackDrop } from "@/app/components/ModalBackDrop";
 import { ModalBody } from "@/app/components/ModalBody";
 import { useModalVisibilityStore } from "@/store/modalVisibilityStore";
 import { Workout } from "@prisma/client";
