@@ -1,15 +1,11 @@
 "use server";
 
 import prisma from "@/lib/prisma";
-import { createClient } from "@/utils/supabase/server";
+import { getUser } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 
 export async function createWorkout(formData: FormData) {
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getUser();
 
   if (!user) {
     return { error: "Only authenticated users can create workouts." };
@@ -35,6 +31,7 @@ export async function createWorkout(formData: FormData) {
     });
 
     revalidatePath("/dashboard");
+
     return { error: null };
   } catch (error: any) {
     return { error: error.message };
