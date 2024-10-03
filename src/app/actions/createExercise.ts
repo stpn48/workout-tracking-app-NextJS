@@ -2,14 +2,11 @@
 
 import prisma from "@/lib/prisma";
 import { SetDetails } from "@/types/type";
-import { createClient } from "@/utils/supabase/server";
+import { getUser } from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
 
 export async function createExercise(exerciseName: string, sets: SetDetails[], workoutId: string) {
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = await getUser();
 
   // if user is not logged in return error
   if (!user) {
@@ -42,6 +39,8 @@ export async function createExercise(exerciseName: string, sets: SetDetails[], w
       exercise_id: exercise.id,
     })),
   });
+
+  revalidatePath(`/workout`);
 
   return { error: null };
 }
