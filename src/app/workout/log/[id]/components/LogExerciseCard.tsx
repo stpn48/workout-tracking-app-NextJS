@@ -7,7 +7,7 @@ import { ExerciseSetList } from "./ExerciseSetList";
 type Props = {
   exercise: ExerciseDetails;
   setEffortsPerExercise: React.Dispatch<
-    React.SetStateAction<{ [exerciseId: string]: { [setId: string]: number } }>
+    React.SetStateAction<{ [exerciseName: string]: { [setId: string]: number } }>
   >;
 };
 
@@ -17,34 +17,34 @@ export function LogExerciseCard({ exercise, setEffortsPerExercise }: Props) {
       setEffortsPerExercise((prev) => {
         const newEfforts = { ...prev };
 
-        if (!newEfforts[exercise.id]) {
-          newEfforts[exercise.id] = {};
+        if (!newEfforts[exercise.name]) {
+          newEfforts[exercise.name] = {};
         }
-        newEfforts[exercise.id][setId] = effort;
+        newEfforts[exercise.name][setId] = effort;
         return newEfforts;
       });
     },
-    [setEffortsPerExercise, exercise.id],
+    [setEffortsPerExercise, exercise.name],
   );
 
   const removeEffort = useCallback(
     (setId: string) => {
       setEffortsPerExercise((prev) => {
         const newEfforts = { ...prev };
-        if (newEfforts[exercise.id]) {
+        if (newEfforts[exercise.name]) {
           // Remove the specific set's effort
-          delete newEfforts[exercise.id][setId];
+          delete newEfforts[exercise.name][setId];
 
           // Optionally remove the exercise entry if no sets are left
-          if (Object.keys(newEfforts[exercise.id]).length === 0) {
-            delete newEfforts[exercise.id];
+          if (Object.keys(newEfforts[exercise.name]).length === 0) {
+            delete newEfforts[exercise.name];
           }
         }
 
         return newEfforts;
       });
     },
-    [exercise.id, setEffortsPerExercise],
+    [exercise.name, setEffortsPerExercise],
   );
 
   return (
