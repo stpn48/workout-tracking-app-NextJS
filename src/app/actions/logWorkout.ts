@@ -3,6 +3,7 @@
 import { getUser } from "@/utils/supabase/server";
 import prisma from "@/lib/prisma";
 import { Workout } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 type Props = {
   effortsPerExercise: {
@@ -92,6 +93,8 @@ export async function logWorkout({ effortsPerExercise, workoutDetails }: Props) 
         timesCompleted: completedWorkout.timesCompleted + 1,
       },
     });
+
+    revalidatePath("/dashboard");
   } catch (e: unknown) {
     if (e instanceof Error) {
       throw new Error(`Error logging workout: ${e.message}`);
