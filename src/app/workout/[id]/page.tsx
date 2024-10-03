@@ -34,8 +34,10 @@ export default async function WorkoutDetails({ params }: Props) {
 
   return (
     <div className="main-bg fixed inset-0 min-h-screen w-screen overflow-scroll p-4 text-white">
-      <Link href={"/dashboard"}>Go Back</Link>
-      <div>
+      <Link className="text-base" href={"/dashboard"}>
+        Go Back
+      </Link>
+      <div className="flex flex-col gap-[1px]">
         <H1>{workoutDetails.name}</H1>
         <p className="text-secondary">{workoutDetails.description}</p>
       </div>
