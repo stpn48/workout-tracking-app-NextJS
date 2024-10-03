@@ -5,7 +5,7 @@ import { H1 } from "@/app/components/H1";
 import { Input } from "@/app/components/Input";
 import { ModalBackDrop } from "@/app/components/ModalBackdrop";
 import { ModalBody } from "@/app/components/ModalBody";
-import React, { useCallback, useEffect, useState, useTransition } from "react";
+import React, { useCallback, useState } from "react";
 import { AddSetModal } from "./AddSetModal";
 import { EditSetModal } from "./EditSetModal";
 import { SetDetails } from "@/types/type";
@@ -48,33 +48,29 @@ export function ExerciseModal({
   const [showRemoveExerciseConfirmation, setShowRemoveExerciseConfirmation] = useState(false);
   const [showDiscardChangesConfirmation, setShowDiscardChangesConfirmation] = useState(false);
 
-  const [removingExercise, startRemovingExercise] = useTransition();
-
   const queryClient = useQueryClient();
 
   const handleSubmit = useCallback(
     (formData: FormData) => {
       submitFn(formData, sets);
     },
-    [sets],
+    [sets, submitFn],
   );
 
-  const handleRemoveExercise = useCallback(() => {
+  const handleRemoveExercise = useCallback(async () => {
     toast.loading("Removing exercise...");
-    startRemovingExercise(async () => {
-      await removeExercise(exerciseId, workoutId);
+    await removeExercise(exerciseId, workoutId);
 
-      queryClient.invalidateQueries({
-        queryKey: ["workoutExercises", { workoutId }],
-      });
-
-      toast.dismiss();
-
-      toast.success("Exercise removed successfully");
-
-      closeModal();
+    queryClient.invalidateQueries({
+      queryKey: ["workoutExercises", { workoutId }],
     });
-  }, []);
+
+    toast.dismiss();
+
+    toast.success("Exercise removed successfully");
+
+    closeModal();
+  }, [closeModal, exerciseId, queryClient, workoutId]);
 
   const handleCloseModal = useCallback(() => {
     if (madeChanges) {
@@ -83,14 +79,15 @@ export function ExerciseModal({
     }
 
     closeModal();
-  }, [madeChanges]);
+  }, [madeChanges, closeModal, setShowDiscardChangesConfirmation]);
 
-  const handleSetClick = useCallback((index: number) => {
-    setShowEditSetModal(true);
-    setCurrEditingSetIndex(index);
-  }, []);
-
-  //TODO: Add a confirmation modal when the user tries to close the modal and has unsaved changes
+  const handleSetClick = useCallback(
+    (index: number) => {
+      setShowEditSetModal(true);
+      setCurrEditingSetIndex(index);
+    },
+    [setShowEditSetModal, setCurrEditingSetIndex],
+  );
 
   return (
     <>

@@ -44,18 +44,18 @@ export function ExerciseList({ exercises, workoutDetails }: Props) {
       await logWorkout({ effortsPerExercise, workoutDetails });
       toast.success("Workout logged successfully");
       router.push("/dashboard/completedExercises");
-    } catch (error: any) {
-      toast.error("Failed to log workout", error);
+    } catch (error: unknown) {
+      toast.error(`Failed to log workout ${error}`);
       return;
     }
-  }, [effortsPerExercise, exercises, workoutDetails]);
+  }, [effortsPerExercise, exercises, workoutDetails, router]);
 
   useEffect(() => {
     if (exercises.length === 0) {
       router.replace("/dashboard");
       toast.error("You need to add exercises to log a workout");
     }
-  }, [exercises]);
+  }, [exercises, router]);
 
   return (
     <div className="mt-10 flex w-full justify-center">

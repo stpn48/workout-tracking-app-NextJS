@@ -36,7 +36,7 @@ export async function getWorkoutExercises(workoutId: string) {
     return [];
   }
 
-  let finaleExercises: ExerciseDetails[] = [];
+  const finaleExercises: ExerciseDetails[] = [];
 
   for (const exercise of exercises) {
     const sets = await prisma.set.findMany({

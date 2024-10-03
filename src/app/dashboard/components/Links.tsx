@@ -5,9 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-type Props = {};
-
-export function Links({}: Props) {
+export function Links() {
   const pathname = usePathname();
 
   const [active, setActive] = useState<number>(1);

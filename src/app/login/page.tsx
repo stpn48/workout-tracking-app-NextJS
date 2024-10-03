@@ -14,32 +14,35 @@ export default function LoginPage() {
 
   const router = useRouter();
 
-  const handleLogin = useCallback((formData: FormData) => {
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+  const handleLogin = useCallback(
+    (formData: FormData) => {
+      const email = formData.get("email") as string;
+      const password = formData.get("password") as string;
 
-    if (!email || !password) {
-      toast.error("Please fill all fields");
-      return;
-    }
-
-    if (!email.includes("@") || !email.includes(".")) {
-      toast.error("Invalid email");
-      return;
-    }
-
-    startLoggingIn(async () => {
-      const { error } = await loginUser(email, password);
-
-      if (error) {
-        toast.error(error);
+      if (!email || !password) {
+        toast.error("Please fill all fields");
         return;
       }
-    });
 
-    toast.success("Logged in successfully");
-    router.replace("/dashboard");
-  }, []);
+      if (!email.includes("@") || !email.includes(".")) {
+        toast.error("Invalid email");
+        return;
+      }
+
+      startLoggingIn(async () => {
+        const { error } = await loginUser(email, password);
+
+        if (error) {
+          toast.error(error);
+          return;
+        }
+      });
+
+      toast.success("Logged in successfully");
+      router.replace("/dashboard");
+    },
+    [router],
+  );
 
   const handleGoogleLogin = useCallback(() => {
     startLoggingIn(async () => {
@@ -54,7 +57,7 @@ export default function LoginPage() {
         router.replace(url);
       }
     });
-  }, []);
+  }, [router]);
 
   return (
     <div className="main-bg fixed inset-0 flex h-screen w-screen items-center justify-center font-geistSans text-white">
@@ -66,13 +69,17 @@ export default function LoginPage() {
           Login
         </Button>
         <p>
-          Don't have an account? Signup{" "}
+          Don&apos;t have an account? Signup{" "}
           <Link href={"/signup"} className="underline">
             here
           </Link>
         </p>
         <hr className="main-border-color" />
-        <Button disabled={isLoggingIn} onClick={handleGoogleLogin} className="flex items-center justify-center gap-2">
+        <Button
+          disabled={isLoggingIn}
+          onClick={handleGoogleLogin}
+          className="flex items-center justify-center gap-2"
+        >
           <Image src="/googleLogo.svg" width={21} height={21} alt="googleLogo" />
           <p>Continue With Google</p>
         </Button>

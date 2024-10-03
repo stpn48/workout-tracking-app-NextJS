@@ -21,7 +21,7 @@ export function ExerciseSetList({ sets, addEffort, removeEffort }: Props) {
 
       addEffort(setId, Number(e.target.value));
     },
-    [addEffort],
+    [addEffort, removeEffort],
   );
 
   return (

@@ -23,6 +23,7 @@ export function SetList({ sets, handleSetClick }: Props) {
 
       {sets.map((set, setIndex) => (
         <div
+          key={set.name + setIndex.toString()}
           onClick={() => handleSetClick(setIndex)}
           className={`${setIndex % 2 === 0 ? "main-bg" : "secondary-bg"} flex cursor-pointer items-center justify-between rounded-lg px-4 py-2`}
         >

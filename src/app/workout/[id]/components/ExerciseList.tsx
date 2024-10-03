@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ExerciseCard } from "./ExerciseCard";
 import { LoadingSpinner } from "@/app/components/LoadingSpinner";
 import toast from "react-hot-toast";
@@ -28,10 +28,13 @@ export default function ExerciseList({ workoutId }: Props) {
 
   const [currEditingExerciseId, setCurrEditingExerciseId] = useState<string | null>(null);
 
-  const handleCardClick = useCallback((exerciseId: string) => {
-    setShowEditExerciseModal(true);
-    setCurrEditingExerciseId(exerciseId);
-  }, []);
+  const handleCardClick = useCallback(
+    (exerciseId: string) => {
+      setShowEditExerciseModal(true);
+      setCurrEditingExerciseId(exerciseId);
+    },
+    [setCurrEditingExerciseId, setShowEditExerciseModal],
+  );
 
   if (error) {
     toast.error(`Failed to load exercises ${error.message}`);

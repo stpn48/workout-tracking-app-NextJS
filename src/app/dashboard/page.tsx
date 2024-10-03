@@ -5,7 +5,7 @@ import { CreateWorkoutModal } from "./components/CreateWorkoutModal";
 import { WorkoutCardList } from "./components/WorkoutCardList";
 import { getUserWorkouts } from "../actions/getUserWorkouts";
 
-export default async function DashboardPage({}: {}) {
+export default async function DashboardPage() {
   const userWorkouts = await getUserWorkouts();
 
   return (

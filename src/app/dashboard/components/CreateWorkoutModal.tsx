@@ -15,23 +15,26 @@ export function CreateWorkoutModal() {
 
   const [isCreatingWorkout, startCreatingWorkout] = useTransition();
 
-  const handleCreateWorkout = useCallback((formData: FormData) => {
-    const name = formData.get("name") as string;
-    const description = formData.get("description") as string;
-    const estimatedTime = formData.get("estimated-time") as string;
+  const handleCreateWorkout = useCallback(
+    (formData: FormData) => {
+      const name = formData.get("name") as string;
+      const description = formData.get("description") as string;
+      const estimatedTime = formData.get("estimated-time") as string;
 
-    if (!name || !description || !estimatedTime) {
-      toast.error("Please fill out all fields");
-      return;
-    }
+      if (!name || !description || !estimatedTime) {
+        toast.error("Please fill out all fields");
+        return;
+      }
 
-    startCreatingWorkout(async () => {
-      await createWorkout(formData);
+      startCreatingWorkout(async () => {
+        await createWorkout(formData);
 
-      toast.success("Workout created successfully");
-      setShowCreateWorkoutModal(false);
-    });
-  }, []);
+        toast.success("Workout created successfully");
+        setShowCreateWorkoutModal(false);
+      });
+    },
+    [setShowCreateWorkoutModal],
+  );
 
   if (!showCreateWorkoutModal) {
     return null;

@@ -33,7 +33,7 @@ export async function createWorkout(formData: FormData) {
     revalidatePath("/dashboard");
 
     return { error: null };
-  } catch (error: any) {
-    return { error: error.message };
+  } catch (error: unknown) {
+    return error instanceof Error && { error: error.message };
   }
 }

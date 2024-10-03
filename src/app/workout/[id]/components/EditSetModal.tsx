@@ -4,7 +4,6 @@ import { Button } from "@/app/components/Button";
 import { ConfirmationModal } from "@/app/components/ConfirmationModal";
 import { H1 } from "@/app/components/H1";
 import { Input } from "@/app/components/Input";
-import { InputLabel } from "@/app/components/InputLabel";
 import { ModalBackDrop } from "@/app/components/ModalBackdrop";
 import { ModalBody } from "@/app/components/ModalBody";
 import { SetDetails } from "@/types/type";
@@ -25,24 +24,27 @@ export function EditSetModal({ closeModal, setSets, set, setIndex }: Props) {
 
   const [editingSet, startEditingSet] = useTransition();
 
-  const handleEditSet = useCallback((formData: FormData) => {
-    const name = formData.get("name") as string;
-    const reps = Number(formData.get("reps"));
+  const handleEditSet = useCallback(
+    (formData: FormData) => {
+      const name = formData.get("name") as string;
+      const reps = Number(formData.get("reps"));
 
-    if (!name || !reps) {
-      toast.error("Please fill out all fields");
-      return;
-    }
+      if (!name || !reps) {
+        toast.error("Please fill out all fields");
+        return;
+      }
 
-    startEditingSet(() => {
-      setSets((prevSets) => {
-        const newSets = [...prevSets];
-        newSets[setIndex] = { name, reps };
-        return newSets;
+      startEditingSet(() => {
+        setSets((prevSets) => {
+          const newSets = [...prevSets];
+          newSets[setIndex] = { name, reps };
+          return newSets;
+        });
+        closeModal();
       });
-      closeModal();
-    });
-  }, []);
+    },
+    [closeModal, setIndex, setSets],
+  );
 
   const handleRemoveSet = useCallback(() => {
     setSets((prevSets) => {
@@ -51,7 +53,7 @@ export function EditSetModal({ closeModal, setSets, set, setIndex }: Props) {
       return newSets;
     });
     closeModal();
-  }, []);
+  }, [closeModal, setIndex, setSets]);
 
   const handleCloseModal = useCallback(() => {
     if (madeChanges) {
@@ -60,7 +62,7 @@ export function EditSetModal({ closeModal, setSets, set, setIndex }: Props) {
     }
 
     closeModal();
-  }, [madeChanges]);
+  }, [madeChanges, closeModal]);
 
   //TODO: Add a confirmation modal when the user tries to close the modal and has unsaved changes
 

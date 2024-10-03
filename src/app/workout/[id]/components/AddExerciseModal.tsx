@@ -19,31 +19,34 @@ export function AddExerciseModal({ workoutId }: Props) {
 
   const [creatingExercise, startCreatingExercise] = useTransition();
 
-  const handleAddExercise = useCallback((formData: FormData, sets: SetDetails[]) => {
-    const name = formData.get("name") as string;
+  const handleAddExercise = useCallback(
+    (formData: FormData, sets: SetDetails[]) => {
+      const name = formData.get("name") as string;
 
-    if (!name || sets.length <= 0) {
-      console.log(name, sets);
-      toast.error("Please fill out all fields");
-      return;
-    }
-
-    startCreatingExercise(async () => {
-      const { error } = await createExercise(name, sets, workoutId);
-
-      if (error) {
-        toast.error(error);
+      if (!name || sets.length <= 0) {
+        console.log(name, sets);
+        toast.error("Please fill out all fields");
         return;
       }
-      // invalidate the query to refetch the exercises
-      queryClient.invalidateQueries({
-        queryKey: ["workoutExercises", { workoutId }],
-      });
 
-      toast.success("Exercise created successfully");
-      setShowAddExerciseModal(false);
-    });
-  }, []);
+      startCreatingExercise(async () => {
+        const { error } = await createExercise(name, sets, workoutId);
+
+        if (error) {
+          toast.error(error);
+          return;
+        }
+        // invalidate the query to refetch the exercises
+        queryClient.invalidateQueries({
+          queryKey: ["workoutExercises", { workoutId }],
+        });
+
+        toast.success("Exercise created successfully");
+        setShowAddExerciseModal(false);
+      });
+    },
+    [queryClient, workoutId, setShowAddExerciseModal],
+  );
 
   if (!showAddExerciseModal) {
     return null;

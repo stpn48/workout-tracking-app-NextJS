@@ -2,7 +2,6 @@ import React from "react";
 import prisma from "@/lib/prisma";
 import { getUser } from "@/utils/supabase/server";
 import { CompletedWorkoutCard } from "./components/CompletedWorkoutCard";
-import { comment } from "postcss";
 
 export default async function CompletedWorkoutsPage() {
   const user = await getUser();
@@ -22,7 +21,7 @@ export default async function CompletedWorkoutsPage() {
       <div className="mt-10 text-white">
         {completedWorkouts.length === 0 && (
           <p className="text-secondary flex w-full justify-center text-xs">
-            You hasn't completed any workout yet.
+            You hasn&apos;t completed any workout yet.
           </p>
         )}
         {completedWorkouts.map((completedWorkout) => (

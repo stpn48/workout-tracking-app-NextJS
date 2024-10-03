@@ -12,11 +12,13 @@ export async function updateSession(request: NextRequest) {
         return request.cookies.getAll();
       },
       setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value));
+        cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
         supabaseResponse = NextResponse.next({
           request,
         });
-        cookiesToSet.forEach(({ name, value, options }) => supabaseResponse.cookies.set(name, value, options));
+        cookiesToSet.forEach(({ name, value, options }) =>
+          supabaseResponse.cookies.set(name, value, options),
+        );
       },
     },
   });
@@ -35,12 +37,20 @@ export async function updateSession(request: NextRequest) {
   const dashboardUrl = `${request.nextUrl.origin}/dashboard`;
 
   // User is not logged in and is not on /login or /signup (unauthenticated user can be only on these pages)
-  if (!user && !request.nextUrl.pathname.startsWith("/login") && !request.nextUrl.pathname.startsWith("/signup")) {
+  if (
+    !user &&
+    !request.nextUrl.pathname.startsWith("/login") &&
+    !request.nextUrl.pathname.startsWith("/signup")
+  ) {
     return NextResponse.redirect(loginUrl, { status: 302 });
   }
 
   // If user is logged in and is trying to access /login or /signup, redirect to dashboard
-  if (user && (request.nextUrl.pathname.startsWith("/login") || request.nextUrl.pathname.startsWith("/signup"))) {
+  if (
+    user &&
+    (request.nextUrl.pathname.startsWith("/login") ||
+      request.nextUrl.pathname.startsWith("/signup"))
+  ) {
     return NextResponse.redirect(dashboardUrl, { status: 302 });
   }
 

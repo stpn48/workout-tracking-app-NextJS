@@ -5,7 +5,6 @@ import React, { useCallback, useState, useTransition } from "react";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useExerciseDetails } from "@/hooks/useExerciseDetails";
-import { LoadingSpinner } from "@/app/components/LoadingSpinner";
 import { updateExerciseDetails } from "@/app/actions/updateExerciseDetails";
 import { ExerciseModal } from "./ExerciseModal";
 import { SetDetails } from "@/types/type";
@@ -32,28 +31,31 @@ export function EditExerciseModal({ exerciseId, workoutId }: Props) {
     onSuccess: () => setInitialSets(exerciseDetails!.sets),
   });
 
-  const handleUpdateExercise = useCallback((formData: FormData, sets: SetDetails[]) => {
-    const name = formData.get("name") as string;
+  const handleUpdateExercise = useCallback(
+    (formData: FormData, sets: SetDetails[]) => {
+      const name = formData.get("name") as string;
 
-    if (!name || sets.length <= 0) {
-      toast.error("Please enter a name for the exercise");
-      return;
-    }
-
-    startUpdatingExercise(async () => {
-      try {
-        await updateExerciseDetails(exerciseId, workoutId, name, sets);
-        queryClient.invalidateQueries({
-          queryKey: ["workoutExercises", { workoutId }],
-        });
-
-        toast.success("Exercise updated successfully");
-        setShowEditExerciseModal(false);
-      } catch (e) {
-        toast.error("Failed to update exercise");
+      if (!name || sets.length <= 0) {
+        toast.error("Please enter a name for the exercise");
+        return;
       }
-    });
-  }, []);
+
+      startUpdatingExercise(async () => {
+        try {
+          await updateExerciseDetails(exerciseId, workoutId, name, sets);
+          queryClient.invalidateQueries({
+            queryKey: ["workoutExercises", { workoutId }],
+          });
+
+          toast.success("Exercise updated successfully");
+          setShowEditExerciseModal(false);
+        } catch {
+          toast.error("Failed to update exercise");
+        }
+      });
+    },
+    [exerciseId, workoutId, queryClient, setShowEditExerciseModal, startUpdatingExercise],
+  );
 
   if (!showEditExerciseModal) {
     return null;

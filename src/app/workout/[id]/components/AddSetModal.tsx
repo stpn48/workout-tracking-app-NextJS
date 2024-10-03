@@ -21,20 +21,23 @@ export function AddSetModal({ closeModal, setSets }: Props) {
 
   const [addingSet, startAddingSet] = useTransition();
 
-  const handleAddSet = useCallback((formData: FormData) => {
-    const name = formData.get("name") as string;
-    const reps = Number(formData.get("reps"));
+  const handleAddSet = useCallback(
+    (formData: FormData) => {
+      const name = formData.get("name") as string;
+      const reps = Number(formData.get("reps"));
 
-    if (!name || !reps) {
-      toast.error("Please fill out all fields");
-      return;
-    }
+      if (!name || !reps) {
+        toast.error("Please fill out all fields");
+        return;
+      }
 
-    startAddingSet(() => {
-      setSets((prevSets) => [...prevSets, { name, reps }]);
-      closeModal();
-    });
-  }, []);
+      startAddingSet(() => {
+        setSets((prevSets) => [...prevSets, { name, reps }]);
+        closeModal();
+      });
+    },
+    [closeModal, setSets],
+  );
 
   const handleCloseModal = useCallback(() => {
     if (madeChanges) {
@@ -43,7 +46,7 @@ export function AddSetModal({ closeModal, setSets }: Props) {
     }
 
     closeModal();
-  }, [madeChanges]);
+  }, [madeChanges, closeModal]);
 
   //TODO: Add a confirmation modal when the user tries to close the modal and has unsaved changes
 

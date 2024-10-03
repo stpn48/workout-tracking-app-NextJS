@@ -20,7 +20,7 @@ export function ToastMsgHandler({ msg, type }: Props) {
           break;
       }
     }
-  }, [msg]);
+  }, [msg, type]);
 
   return null;
 }

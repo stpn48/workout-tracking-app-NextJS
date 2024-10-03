@@ -13,10 +13,12 @@ export default function MoreDetailsModal({ completedExercise, closeModal }: Prop
   return (
     <ModalBackDrop onClick={closeModal}>
       <ModalBody closeModal={closeModal} className="text-white">
-        <h1>{completedExercise.name}</h1>
+        <h1 className="text-lg">{completedExercise.name}</h1>
         <h1>times completed: {completedExercise.timesCompleted}</h1>
-        <div className="mt-10 flex flex-col gap-4">
-          <h1 className="flex w-full justify-center text-xl font-bold">Your progress chart</h1>
+        <div className="mt-20 flex flex-col gap-4">
+          <h1 className="text-secondary mb-10 flex w-full justify-center text-xs font-bold uppercase">
+            Your progress chart
+          </h1>
 
           <ProgressChart effortHistory={completedExercise.maxRepsHistory} />
         </div>

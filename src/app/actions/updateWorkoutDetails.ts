@@ -10,7 +10,12 @@ type Props = {
   workoutId: string;
 };
 
-export async function updateWorkoutDetails({ newName, newDescription, newEstimatedTime, workoutId }: Props) {
+export async function updateWorkoutDetails({
+  newName,
+  newDescription,
+  newEstimatedTime,
+  workoutId,
+}: Props) {
   if (!newName || !newDescription || !newEstimatedTime) {
     return { error: "Unexpected Error. Please fill in all fields" };
   }
@@ -19,7 +24,7 @@ export async function updateWorkoutDetails({ newName, newDescription, newEstimat
 
   try {
     newEstimatedTimeNumber = parseInt(newEstimatedTime);
-  } catch (e) {
+  } catch {
     return { error: "Unexpected Error. Please enter a valid estimated time" };
   }
 

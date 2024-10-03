@@ -1,7 +1,7 @@
 import { CompletedExercisesList } from "./components/CompletedExercisesList";
 import { getCompletedExercises } from "@/app/actions/getCompletedExercises";
 import { ToastMsgHandler } from "@/app/components/ToastMsgHandler";
-import React, { useState } from "react";
+import React from "react";
 
 export default async function CompletedExercisesPage() {
   let errorMessage = "";

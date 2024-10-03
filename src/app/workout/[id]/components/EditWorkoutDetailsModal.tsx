@@ -1,6 +1,5 @@
 "use client";
 
-import { createWorkout } from "@/app/actions/createWorkout";
 import { updateWorkoutDetails } from "@/app/actions/updateWorkoutDetails";
 import { Button } from "@/app/components/Button";
 import { H1 } from "@/app/components/H1";
@@ -21,33 +20,36 @@ export function EditWorkoutDetailsModal({ workoutDetails }: Props) {
 
   const [isUpdatingWorkout, startUpdatingWorkout] = useTransition();
 
-  const handleEditWorkoutDetails = useCallback((formData: FormData) => {
-    const newName = formData.get("name") as string;
-    const newDescription = formData.get("description") as string;
-    const newEstimatedTime = formData.get("estimated-time") as string;
+  const handleEditWorkoutDetails = useCallback(
+    (formData: FormData) => {
+      const newName = formData.get("name") as string;
+      const newDescription = formData.get("description") as string;
+      const newEstimatedTime = formData.get("estimated-time") as string;
 
-    if (!newName || !newDescription || !newEstimatedTime) {
-      toast.error("Please fill in all fields");
-      return;
-    }
-
-    startUpdatingWorkout(async () => {
-      const { error } = await updateWorkoutDetails({
-        newName,
-        newDescription,
-        newEstimatedTime: newEstimatedTime,
-        workoutId: workoutDetails.id,
-      });
-
-      if (error) {
-        toast.error(error);
+      if (!newName || !newDescription || !newEstimatedTime) {
+        toast.error("Please fill in all fields");
         return;
       }
 
-      toast.success("Workout updated successfully");
-      setShowEditWorkoutDetailModal(false);
-    });
-  }, []);
+      startUpdatingWorkout(async () => {
+        const { error } = await updateWorkoutDetails({
+          newName,
+          newDescription,
+          newEstimatedTime: newEstimatedTime,
+          workoutId: workoutDetails.id,
+        });
+
+        if (error) {
+          toast.error(error);
+          return;
+        }
+
+        toast.success("Workout updated successfully");
+        setShowEditWorkoutDetailModal(false);
+      });
+    },
+    [setShowEditWorkoutDetailModal, workoutDetails.id],
+  );
 
   if (!showEditWorkoutDetailsModal) {
     return null;

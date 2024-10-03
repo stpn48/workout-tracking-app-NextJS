@@ -26,7 +26,7 @@ export function useExerciseDetails({ exerciseId, workoutId, onSuccess }: Props) 
     if (queryUtils.isSuccess) {
       onSuccess();
     }
-  }, [queryUtils.isSuccess]);
+  }, [queryUtils.isSuccess, onSuccess]);
 
   return { ...queryUtils };
 }

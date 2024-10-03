@@ -1,8 +1,14 @@
-// global.d.ts
+// src/types/global.d.ts
 import { PrismaClient } from "@prisma/client";
 
+// Augmenting the NodeJS global namespace
 declare global {
-  var prisma: PrismaClient | undefined; // Add prisma to the global object
+  namespace NodeJS {
+    interface Global {
+      prisma: PrismaClient | undefined;
+    }
+  }
 }
 
+// Ensure the file is treated as a module
 export {};

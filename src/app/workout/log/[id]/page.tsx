@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { ExerciseList } from "./components/ExerciseList";
 import prisma from "@/lib/prisma";
 import { Workout } from "@prisma/client";
+import { ExerciseDetails } from "@/types/type";
 
 export default async function LogWorkoutPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -15,7 +16,7 @@ export default async function LogWorkoutPage({ params }: { params: { id: string 
   }
 
   let workoutDetails: Workout | null = null;
-  let exercises: any[] = [];
+  let exercises: ExerciseDetails[] = [];
 
   try {
     // Fetch workout details

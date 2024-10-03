@@ -6,11 +6,10 @@ import { twMerge } from "tailwind-merge";
 type Props = {
   children: React.ReactNode;
   className?: string;
-  onClick?: () => void;
   closeModal?: () => void;
 };
 
-export function ModalBody({ children, className, onClick, closeModal }: Props) {
+export function ModalBody({ children, className, closeModal }: Props) {
   return (
     <div
       className={twMerge(

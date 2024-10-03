@@ -3,7 +3,6 @@
 import { signOut } from "@/app/actions/auth";
 import { Button } from "@/app/components/Button";
 import { ConfirmationModal } from "@/app/components/ConfirmationModal";
-import { useRouter } from "next/navigation";
 import React, { useCallback, useState, useTransition } from "react";
 import toast from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
