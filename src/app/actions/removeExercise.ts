@@ -2,6 +2,7 @@
 
 import prisma from "@/lib/prisma";
 import { getUser } from "@/utils/supabase/server";
+import { revalidatePath } from "next/cache";
 
 export async function removeExercise(exerciseId: string, workoutId: string) {
   const user = await getUser();
@@ -29,4 +30,6 @@ export async function removeExercise(exerciseId: string, workoutId: string) {
       id: exerciseId,
     },
   });
+
+  revalidatePath("/workout");
 }
