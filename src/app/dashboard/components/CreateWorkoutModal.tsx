@@ -37,11 +37,12 @@ export function CreateWorkoutModal() {
     return null;
   }
 
-  //TODO: Play with design, add X button to close modal
-
   return (
     <ModalBackDrop onClick={() => setShowCreateWorkoutModal(false)}>
-      <ModalBody className="flex h-fit w-fit flex-col gap-4 px-20 py-10">
+      <ModalBody
+        closeModal={() => setShowCreateWorkoutModal(false)}
+        className="flex h-fit w-fit flex-col gap-4 px-20 py-10"
+      >
         <H1>Create Workout</H1>
         <form className="text-secondary flex flex-col gap-2 text-sm" action={handleCreateWorkout}>
           <div className="flex flex-col gap-1">
