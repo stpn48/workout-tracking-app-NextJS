@@ -57,7 +57,10 @@ export function EditWorkoutDetailsModal({ workoutDetails }: Props) {
 
   return (
     <ModalBackDrop onClick={() => setShowEditWorkoutDetailModal(false)}>
-      <ModalBody className="flex h-fit w-fit flex-col gap-4 px-20 py-10">
+      <ModalBody
+        closeModal={() => setShowEditWorkoutDetailModal(false)}
+        className="flex h-fit w-fit flex-col gap-4 px-20 py-10"
+      >
         <H1>Edit Workout Details</H1>
         <form
           className="text-secondary flex flex-col gap-2 text-sm"
