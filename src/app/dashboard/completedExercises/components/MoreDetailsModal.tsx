@@ -5,15 +5,14 @@ import React from "react";
 
 type Props = {
   completedExercise: CompletedExercise;
-  exerciseName: string;
   closeModal: () => void;
 };
 
-export default function MoreDetailsModal({ completedExercise, exerciseName, closeModal }: Props) {
+export default function MoreDetailsModal({ completedExercise, closeModal }: Props) {
   return (
     <ModalBackDrop onClick={closeModal}>
-      <ModalBody className="text-white">
-        <h1>{exerciseName}</h1>
+      <ModalBody closeModal={closeModal} className="text-white">
+        <h1>{completedExercise.name}</h1>
         <h1>times completed: {completedExercise.timesCompleted}</h1>
         {/* TODO: add a graph */}
         <h1>effort history: {JSON.stringify(completedExercise.maxRepsHistory)}</h1>
