@@ -6,21 +6,21 @@ import toast from "react-hot-toast";
 import { createExercise } from "@/app/actions/createExercise";
 import { useQueryClient } from "@tanstack/react-query";
 import { ExerciseModal } from "./ExerciseModal";
-import { SetDetails } from "@/types/type";
+import { ExerciseDetails, SetDetails } from "@/types/type";
+import { Set } from "@prisma/client";
 
 type Props = {
   workoutId: string;
+  addOptimisticExercise: (newExercise: ExerciseDetails) => void;
 };
 
-export function AddExerciseModal({ workoutId }: Props) {
-  const { showAddExerciseModal, setShowAddExerciseModal } = useModalVisibilityStore();
+export function AddExerciseModal({ workoutId, addOptimisticExercise }: Props) {
+  const { setShowAddExerciseModal } = useModalVisibilityStore();
 
   const queryClient = useQueryClient();
 
-  const [creatingExercise, startCreatingExercise] = useTransition();
-
   const handleAddExercise = useCallback(
-    (formData: FormData, sets: SetDetails[]) => {
+    async (formData: FormData, sets: SetDetails[]) => {
       const name = formData.get("name") as string;
 
       if (!name || sets.length <= 0) {
@@ -29,37 +29,35 @@ export function AddExerciseModal({ workoutId }: Props) {
         return;
       }
 
-      startCreatingExercise(async () => {
-        const { error } = await createExercise(name, sets, workoutId);
-
-        if (error) {
-          toast.error(error);
-          return;
-        }
-        // invalidate the query to refetch the exercises
-        queryClient.invalidateQueries({
-          queryKey: ["workoutExercises", { workoutId }],
-        });
-
-        toast.success("Exercise created successfully");
-        setShowAddExerciseModal(false);
+      addOptimisticExercise({
+        id: "optimistic",
+        name,
+        sets: sets as Set[],
+        workout_id: workoutId,
+        created_at: new Date(),
       });
+
+      setShowAddExerciseModal(false);
+
+      const { error } = await createExercise(name, sets, workoutId);
+
+      if (error) {
+        toast.error(error);
+        return;
+      }
+
+      queryClient.invalidateQueries({ queryKey: ["workoutExercises", { workoutId }] });
+
+      toast.success("Exercise created successfully");
     },
     [queryClient, workoutId, setShowAddExerciseModal],
   );
-
-  if (!showAddExerciseModal) {
-    return null;
-  }
-
-  //TODO: Add a confirmation modal when the user tries to close the modal and has unsaved changes
 
   return (
     <ExerciseModal
       workoutId="workoutId"
       exerciseId="exerciseId"
       closeModal={() => setShowAddExerciseModal(false)}
-      isPending={creatingExercise}
       submitFn={handleAddExercise}
       title="Add Exercise"
       finalButtonText="Add Exercise"

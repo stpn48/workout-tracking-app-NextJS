@@ -1,30 +1,31 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useOptimistic, useState } from "react";
 import { ExerciseCard } from "./ExerciseCard";
 import { LoadingSpinner } from "@/app/components/LoadingSpinner";
 import toast from "react-hot-toast";
 import { useExercises } from "@/hooks/useExercises";
 import { useModalVisibilityStore } from "@/store/modalVisibilityStore";
 import { EditExerciseModal } from "./EditExerciseModal";
-
-const MemoExerciseCard = React.memo(ExerciseCard);
+import { ExerciseDetails } from "@/types/type";
+import { AddExerciseModal } from "./AddExerciseModal";
 
 type Props = {
   workoutId: string;
 };
 
 export default function ExerciseList({ workoutId }: Props) {
-  const { showEditExerciseModal, setShowEditExerciseModal } = useModalVisibilityStore();
+  const { showEditExerciseModal, setShowEditExerciseModal, showAddExerciseModal } =
+    useModalVisibilityStore();
 
-  const {
-    data: exercises,
-    error,
-    isLoading,
-    isSuccess,
-    isRefetching,
-    isFetching,
-  } = useExercises(workoutId);
+  const { data: exercises, error, isLoading, isSuccess } = useExercises(workoutId);
+
+  const [optimisticExercises, addOptimisticExercise] = useOptimistic(
+    exercises || [],
+    (state, newExercise: ExerciseDetails) => {
+      return [...state, newExercise];
+    },
+  );
 
   const [currEditingExerciseId, setCurrEditingExerciseId] = useState<string | null>(null);
 
@@ -41,7 +42,7 @@ export default function ExerciseList({ workoutId }: Props) {
     return null;
   }
 
-  if (isLoading || isRefetching || !isSuccess || isFetching) {
+  if (isLoading || !isSuccess) {
     return (
       <div className="mt-20 flex w-full justify-center">
         <LoadingSpinner />
@@ -57,8 +58,8 @@ export default function ExerciseList({ workoutId }: Props) {
             No exercises. Add some
           </p>
         )}
-        {exercises.map((exercise, exerciseIndex) => (
-          <MemoExerciseCard
+        {optimisticExercises.map((exercise, exerciseIndex) => (
+          <ExerciseCard
             order={exerciseIndex + 1}
             key={exercise.id}
             exercise={exercise}
@@ -66,6 +67,10 @@ export default function ExerciseList({ workoutId }: Props) {
           />
         ))}
       </div>
+
+      {showAddExerciseModal && (
+        <AddExerciseModal addOptimisticExercise={addOptimisticExercise} workoutId={workoutId} />
+      )}
 
       {showEditExerciseModal && (
         <EditExerciseModal exerciseId={currEditingExerciseId!} workoutId={workoutId} />

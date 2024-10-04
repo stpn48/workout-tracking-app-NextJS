@@ -14,8 +14,6 @@ export default async function DashboardPage() {
 
       <CreateWorkoutButton className="absolute right-4 top-4" />
       <SignOutButton className="absolute bottom-4 right-4" />
-
-      <CreateWorkoutModal />
     </div>
   );
 }

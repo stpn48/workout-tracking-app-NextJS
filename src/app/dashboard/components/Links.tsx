@@ -22,13 +22,13 @@ export function Links() {
 
   return (
     <div className="flex gap-4">
-      <Link href="/dashboard">
+      <Link prefetch={true} href="/dashboard">
         <H1 className={`${active !== 1 && "text-[#313131]"}`}>Your Workouts</H1>
       </Link>
-      <Link href="/dashboard/completedExercises">
+      <Link prefetch={true} href="/dashboard/completedExercises">
         <H1 className={`${active !== 2 && "text-[#313131]"}`}>Completed Exercises</H1>
       </Link>
-      <Link href="/dashboard/completedWorkouts">
+      <Link prefetch={true} href="/dashboard/completedWorkouts">
         <H1 className={`${active !== 3 && "text-[#313131]"}`}>Completed Workouts</H1>
       </Link>
     </div>

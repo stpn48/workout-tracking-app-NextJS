@@ -34,7 +34,7 @@ export default async function WorkoutDetails({ params }: Props) {
 
   return (
     <div className="main-bg fixed inset-0 min-h-screen w-screen overflow-scroll p-4 text-white">
-      <Link className="text-base" href={"/dashboard"}>
+      <Link prefetch={true} className="text-base" href={"/dashboard"}>
         Go Back
       </Link>
       <div className="flex flex-col gap-[1px]">
@@ -49,7 +49,6 @@ export default async function WorkoutDetails({ params }: Props) {
         <AddExerciseButton />
       </div>
 
-      <AddExerciseModal workoutId={params.id} />
       <EditWorkoutDetailsModal workoutDetails={workoutDetails} />
     </div>
   );

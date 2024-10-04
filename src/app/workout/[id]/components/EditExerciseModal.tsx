@@ -17,7 +17,7 @@ type Props = {
 };
 
 export function EditExerciseModal({ exerciseId, workoutId }: Props) {
-  const { showEditExerciseModal, setShowEditExerciseModal } = useModalVisibilityStore();
+  const { setShowEditExerciseModal } = useModalVisibilityStore();
 
   const queryClient = useQueryClient();
 
@@ -56,10 +56,6 @@ export function EditExerciseModal({ exerciseId, workoutId }: Props) {
     },
     [exerciseId, workoutId, queryClient, setShowEditExerciseModal, startUpdatingExercise],
   );
-
-  if (!showEditExerciseModal) {
-    return null;
-  }
 
   if (isLoading || !exerciseDetails || initialSets.length === 0) {
     return (

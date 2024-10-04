@@ -87,7 +87,7 @@ export default function SignUpPage() {
         </Button>
         <p>
           Have an account? Login{" "}
-          <Link href={"/login"} className="underline">
+          <Link prefetch={true} href={"/login"} className="underline">
             here
           </Link>
         </p>

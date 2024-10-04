@@ -39,7 +39,7 @@ export default async function LogWorkoutPage({ params }: { params: { id: string 
   return (
     <div className="main-bg min-h-screen w-screen p-4 text-sm text-white">
       <div className="flex flex-col gap-1">
-        <Link className="text-base" href="/dashboard">
+        <Link prefetch={true} className="text-base" href="/dashboard">
           Go Back
         </Link>
         <H1>Log Workout</H1>

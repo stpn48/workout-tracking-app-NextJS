@@ -6,17 +6,18 @@ import { H1 } from "@/app/components/H1";
 import { Input } from "@/app/components/Input";
 import { ModalBackDrop } from "@/app/components/ModalBackDrop";
 import { ModalBody } from "@/app/components/ModalBody";
-import { useModalVisibilityStore } from "@/store/modalVisibilityStore";
+import { Workout } from "@prisma/client";
 import React, { useCallback, useTransition } from "react";
 import toast from "react-hot-toast";
 
-export function CreateWorkoutModal() {
-  const { showCreateWorkoutModal, setShowCreateWorkoutModal } = useModalVisibilityStore();
+type Props = {
+  closeModal: () => void;
+  addOptimisticWorkout: (workout: Workout) => void;
+};
 
-  const [isCreatingWorkout, startCreatingWorkout] = useTransition();
-
+export function CreateWorkoutModal({ closeModal, addOptimisticWorkout }: Props) {
   const handleCreateWorkout = useCallback(
-    (formData: FormData) => {
+    async (formData: FormData) => {
       const name = formData.get("name") as string;
       const description = formData.get("description") as string;
       const estimatedTime = formData.get("estimated-time") as string;
@@ -26,43 +27,36 @@ export function CreateWorkoutModal() {
         return;
       }
 
-      startCreatingWorkout(async () => {
-        await createWorkout(formData);
-
-        toast.success("Workout created successfully");
-        setShowCreateWorkoutModal(false);
+      addOptimisticWorkout({
+        name: name,
+        description: description,
+        estimated_time: parseInt(estimatedTime),
+        id: Math.random().toString(),
+        author_id: "1",
+        created_at: new Date(),
       });
+
+      closeModal();
+
+      await createWorkout(formData);
     },
-    [setShowCreateWorkoutModal],
+    [closeModal, addOptimisticWorkout],
   );
 
-  if (!showCreateWorkoutModal) {
-    return null;
-  }
-
   return (
-    <ModalBackDrop onClick={() => setShowCreateWorkoutModal(false)}>
-      <ModalBody
-        closeModal={() => setShowCreateWorkoutModal(false)}
-        className="flex h-fit w-fit flex-col gap-4 px-20 py-10"
-      >
+    <ModalBackDrop onClick={closeModal}>
+      <ModalBody closeModal={closeModal} className="flex h-fit w-fit flex-col gap-4 px-20 py-10">
         <H1>Create Workout</H1>
         <form className="text-secondary flex flex-col gap-2 text-sm" action={handleCreateWorkout}>
           <div className="flex flex-col gap-1">
             <label htmlFor="workout-name">Name:</label>
-            <Input
-              disabled={isCreatingWorkout}
-              id="workout-name"
-              placeholder="Back workout"
-              name="name"
-            />
+            <Input id="workout-name" placeholder="Back workout" name="name" />
           </div>
 
           <div className="flex flex-col gap-1">
             <label htmlFor="workout-description">Description:</label>
             <Input
               id="workout-description"
-              disabled={isCreatingWorkout}
               placeholder="Heavily focused on the back muscles"
               name="description"
             />
@@ -73,7 +67,6 @@ export function CreateWorkoutModal() {
             <div className="flex items-center gap-2">
               <Input
                 id="workout-estimated-time"
-                disabled={isCreatingWorkout}
                 type="number"
                 placeholder="60"
                 name="estimated-time"
@@ -82,7 +75,7 @@ export function CreateWorkoutModal() {
             </div>
           </div>
 
-          <Button className="mt-4" disabled={isCreatingWorkout} type="submit">
+          <Button className="mt-4" type="submit">
             Create Workout
           </Button>
         </form>
