@@ -1,29 +1,29 @@
 "use client";
 
 import { useModalVisibilityStore } from "@/store/modalVisibilityStore";
-import React, { useCallback, useState, useTransition } from "react";
+import React, { useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useExerciseDetails } from "@/hooks/useExerciseDetails";
 import { updateExerciseDetails } from "@/app/actions/updateExerciseDetails";
 import { ExerciseModal } from "./ExerciseModal";
-import { SetDetails } from "@/types/type";
+import { ExerciseDetails, SetDetails } from "@/types/type";
 import { ModalBackDrop } from "@/app/components/ModalBackDrop";
 import { ModalBody } from "@/app/components/ModalBody";
+import { Set } from "@prisma/client";
 
 type Props = {
   workoutId: string;
   exerciseId: string;
+  updateOptimisticExercise: (exerciseId: string, newData: ExerciseDetails) => void;
 };
 
-export function EditExerciseModal({ exerciseId, workoutId }: Props) {
+export function EditExerciseModal({ exerciseId, workoutId, updateOptimisticExercise }: Props) {
   const { setShowEditExerciseModal } = useModalVisibilityStore();
 
   const queryClient = useQueryClient();
 
   const [initialSets, setInitialSets] = useState<SetDetails[]>([]);
-
-  const [updatingExercise, startUpdatingExercise] = useTransition();
 
   const { data: exerciseDetails, isLoading } = useExerciseDetails({
     exerciseId,
@@ -32,7 +32,7 @@ export function EditExerciseModal({ exerciseId, workoutId }: Props) {
   });
 
   const handleUpdateExercise = useCallback(
-    (formData: FormData, sets: SetDetails[]) => {
+    async (formData: FormData, sets: SetDetails[]) => {
       const name = formData.get("name") as string;
 
       if (!name || sets.length <= 0) {
@@ -40,21 +40,30 @@ export function EditExerciseModal({ exerciseId, workoutId }: Props) {
         return;
       }
 
-      startUpdatingExercise(async () => {
-        try {
-          await updateExerciseDetails(exerciseId, workoutId, name, sets);
-          queryClient.invalidateQueries({
-            queryKey: ["workoutExercises", { workoutId }],
-          });
+      const dupeSets = sets as Set[];
 
-          toast.success("Exercise updated successfully");
-          setShowEditExerciseModal(false);
-        } catch {
-          toast.error("Failed to update exercise");
-        }
+      updateOptimisticExercise(exerciseId, {
+        id: exerciseId,
+        name,
+        workout_id: workoutId,
+        sets: dupeSets,
+        created_at: new Date(),
       });
+
+      setShowEditExerciseModal(false);
+
+      try {
+        await updateExerciseDetails(exerciseId, workoutId, name, sets);
+        queryClient.invalidateQueries({
+          queryKey: ["workoutExercises", { workoutId }],
+        });
+
+        toast.success("Exercise updated successfully");
+      } catch {
+        toast.error("Failed to update exercise");
+      }
     },
-    [exerciseId, workoutId, queryClient, setShowEditExerciseModal, startUpdatingExercise],
+    [exerciseId, workoutId, queryClient, setShowEditExerciseModal, updateOptimisticExercise],
   );
 
   if (isLoading || !exerciseDetails || initialSets.length === 0) {
@@ -88,7 +97,6 @@ export function EditExerciseModal({ exerciseId, workoutId }: Props) {
       initialSets={initialSets}
       initialName={exerciseDetails.name}
       finalButtonText="Save"
-      isPending={updatingExercise}
       submitFn={handleUpdateExercise}
       closeModal={() => setShowEditExerciseModal(false)}
     />

@@ -18,14 +18,9 @@ export default function ExerciseList({ workoutId }: Props) {
   const { showEditExerciseModal, setShowEditExerciseModal, showAddExerciseModal } =
     useModalVisibilityStore();
 
-  const { data: exercises, error, isLoading, isSuccess } = useExercises(workoutId);
+  const { data, error, isLoading, isSuccess } = useExercises(workoutId);
 
-  const [optimisticExercises, addOptimisticExercise] = useOptimistic(
-    exercises || [],
-    (state, newExercise: ExerciseDetails) => {
-      return [...state, newExercise];
-    },
-  );
+  const [optimisticExercises, setOptimisticExercises] = useOptimistic(data?.exercises || []);
 
   const [currEditingExerciseId, setCurrEditingExerciseId] = useState<string | null>(null);
 
@@ -35,6 +30,17 @@ export default function ExerciseList({ workoutId }: Props) {
       setCurrEditingExerciseId(exerciseId);
     },
     [setCurrEditingExerciseId, setShowEditExerciseModal],
+  );
+
+  const updateOptimisticExercise = useCallback(
+    (exerciseId: string, newData: ExerciseDetails) =>
+      setOptimisticExercises((state) => {
+        const updatedExercise = [...state];
+        const index = updatedExercise.findIndex((exercise) => exercise.id === exerciseId);
+        updatedExercise[index] = newData;
+        return updatedExercise;
+      }),
+    [setOptimisticExercises],
   );
 
   if (error) {
@@ -53,7 +59,7 @@ export default function ExerciseList({ workoutId }: Props) {
   return (
     <>
       <div className="mt-8 flex flex-wrap gap-4">
-        {exercises.length === 0 && (
+        {optimisticExercises.length === 0 && (
           <p className="text-secondary flex w-full justify-center text-xs">
             No exercises. Add some
           </p>
@@ -69,11 +75,20 @@ export default function ExerciseList({ workoutId }: Props) {
       </div>
 
       {showAddExerciseModal && (
-        <AddExerciseModal addOptimisticExercise={addOptimisticExercise} workoutId={workoutId} />
+        <AddExerciseModal
+          addOptimisticExercise={(newExercise: ExerciseDetails) =>
+            setOptimisticExercises((state) => [...state, newExercise])
+          }
+          workoutId={workoutId}
+        />
       )}
 
       {showEditExerciseModal && (
-        <EditExerciseModal exerciseId={currEditingExerciseId!} workoutId={workoutId} />
+        <EditExerciseModal
+          exerciseId={currEditingExerciseId!}
+          workoutId={workoutId}
+          updateOptimisticExercise={updateOptimisticExercise}
+        />
       )}
     </>
   );

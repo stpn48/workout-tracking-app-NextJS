@@ -7,7 +7,7 @@ import { Input } from "@/app/components/Input";
 import { ModalBackDrop } from "@/app/components/ModalBackDrop";
 import { ModalBody } from "@/app/components/ModalBody";
 import { Workout } from "@prisma/client";
-import React, { useCallback, useTransition } from "react";
+import React, { useCallback } from "react";
 import toast from "react-hot-toast";
 
 type Props = {

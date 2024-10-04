@@ -1,7 +1,7 @@
 "use client";
 
 import { useModalVisibilityStore } from "@/store/modalVisibilityStore";
-import React, { useCallback, useTransition } from "react";
+import React, { useCallback } from "react";
 import toast from "react-hot-toast";
 import { createExercise } from "@/app/actions/createExercise";
 import { useQueryClient } from "@tanstack/react-query";
@@ -50,7 +50,7 @@ export function AddExerciseModal({ workoutId, addOptimisticExercise }: Props) {
 
       toast.success("Exercise created successfully");
     },
-    [queryClient, workoutId, setShowAddExerciseModal],
+    [queryClient, workoutId, setShowAddExerciseModal, addOptimisticExercise],
   );
 
   return (
