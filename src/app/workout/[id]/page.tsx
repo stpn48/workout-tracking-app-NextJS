@@ -4,7 +4,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 import { AddExerciseButton } from "./components/AddExerciseButton";
-import { AddExerciseModal } from "./components/AddExerciseModal";
 import { getUser } from "@/utils/supabase/server";
 import { EditWorkoutDetailsButton } from "./components/EditWorkoutDetailsButton";
 import { EditWorkoutDetailsModal } from "./components/EditWorkoutDetailsModal";
@@ -15,10 +14,6 @@ type Props = {
 };
 
 export default async function WorkoutDetails({ params }: Props) {
-  if (!params.id) {
-    redirect("/dashboard");
-  }
-
   const { error, data: workoutDetails } = await getWorkoutDetails(params.id);
 
   if (error || !workoutDetails) {

@@ -6,7 +6,7 @@ type Props = {
   completedExercises: CompletedExercise[];
 };
 
-export async function CompletedExercisesList({ completedExercises }: Props) {
+export function CompletedExercisesList({ completedExercises }: Props) {
   return (
     <div className="mt-10 flex flex-wrap gap-4">
       {completedExercises.length === 0 && (

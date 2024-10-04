@@ -9,7 +9,7 @@ type Props = {
   closeModal: () => void;
 };
 
-export default function MoreDetailsModal({ completedExercise, closeModal }: Props) {
+export function MoreDetailsModal({ completedExercise, closeModal }: Props) {
   return (
     <ModalBackDrop onClick={closeModal}>
       <ModalBody closeModal={closeModal} className="text-white">

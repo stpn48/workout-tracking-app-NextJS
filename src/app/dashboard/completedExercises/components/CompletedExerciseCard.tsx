@@ -2,7 +2,7 @@
 
 import { CompletedExercise } from "@prisma/client";
 import { useState } from "react";
-import MoreDetailsModal from "./MoreDetailsModal";
+import { MoreDetailsModal } from "./MoreDetailsModal";
 
 type Props = {
   completedExercise: CompletedExercise;

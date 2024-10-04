@@ -1,7 +1,6 @@
 import React from "react";
 import { SignOutButton } from "./components/SignOutButton";
 import { CreateWorkoutButton } from "./components/CreateWorkoutButton";
-import { CreateWorkoutModal } from "./components/CreateWorkoutModal";
 import { WorkoutCardList } from "./components/WorkoutCardList";
 import { getUserWorkouts } from "../actions/getUserWorkouts";
 

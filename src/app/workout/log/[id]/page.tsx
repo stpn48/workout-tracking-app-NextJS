@@ -4,8 +4,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ExerciseList } from "./components/ExerciseList";
 import prisma from "@/lib/prisma";
-import { Workout } from "@prisma/client";
-import { ExerciseDetails } from "@/types/type";
 
 export default async function LogWorkoutPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -15,24 +13,20 @@ export default async function LogWorkoutPage({ params }: { params: { id: string 
     redirect("/dashboard");
   }
 
-  let workoutDetails: Workout | null = null;
-  let exercises: ExerciseDetails[] = [];
+  // Fetch workout details
+  const workoutDetails = await prisma.workout.findFirst({
+    where: { id },
+  });
 
-  try {
-    // Fetch workout details
-    workoutDetails = await prisma.workout.findFirst({
-      where: { id },
-    });
+  // If workout is not found, throw an error and redirect
+  if (!workoutDetails) {
+    redirect("/dashboard");
+  }
 
-    // If workout is not found, throw an error and redirect
-    if (!workoutDetails) {
-      redirect("/dashboard");
-    }
+  // Fetch exercises for the workout
+  const { error, exercises } = await getWorkoutExercises(id);
 
-    // Fetch exercises for the workout
-    exercises = await getWorkoutExercises(id);
-  } catch (error: unknown) {
-    console.error("Failed to get workout or exercises", error);
+  if (error || !exercises) {
     redirect("/dashboard");
   }
 

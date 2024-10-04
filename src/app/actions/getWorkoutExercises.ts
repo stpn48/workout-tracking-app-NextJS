@@ -8,7 +8,7 @@ export async function getWorkoutExercises(workoutId: string) {
   const user = await getUser();
 
   if (!workoutId || !user) {
-    throw new Error("Invalid request");
+    return { error: "Unauthorized" };
   }
 
   const workoutDetails = await prisma.workout.findUnique({
@@ -18,11 +18,11 @@ export async function getWorkoutExercises(workoutId: string) {
   });
 
   if (!workoutDetails) {
-    throw new Error("Workout not found");
+    return { error: "Workout details not found" };
   }
 
   if (workoutDetails.author_id !== user.id) {
-    throw new Error("Unauthorized");
+    return { error: "Unauthorized" };
   }
 
   // all security check validations passed
@@ -33,7 +33,7 @@ export async function getWorkoutExercises(workoutId: string) {
   });
 
   if (!exercises) {
-    return [];
+    return { error: "No exercises found" };
   }
 
   const finaleExercises: ExerciseDetails[] = [];
@@ -53,5 +53,5 @@ export async function getWorkoutExercises(workoutId: string) {
     return a.created_at.getTime() - b.created_at.getTime();
   });
 
-  return finaleExercises;
+  return { error: null, exercises: finaleExercises };
 }

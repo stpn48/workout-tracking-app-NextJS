@@ -1,6 +1,4 @@
-import React from "react";
-
-export default function loading() {
+export default function Loading() {
   return (
     <div className="main-bg fixed inset-0 min-h-screen w-screen overflow-scroll p-4 text-white">
       <div className="flex flex-col gap-3">

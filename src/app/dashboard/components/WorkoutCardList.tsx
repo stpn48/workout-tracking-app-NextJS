@@ -1,7 +1,7 @@
 "use client";
 
 import { Workout } from "@prisma/client";
-import React, { useState } from "react";
+import React from "react";
 import { WorkoutCard } from "./WorkoutCard";
 import Image from "next/image";
 import { useOptimistic } from "react";
@@ -43,6 +43,7 @@ export function WorkoutCardList({ workouts }: Props) {
           <WorkoutCard key={workout.id} workout={workout} />
         ))}
       </div>
+
       {showCreateWorkoutModal && (
         <CreateWorkoutModal
           addOptimisticWorkout={addOptimisticWorkout}
